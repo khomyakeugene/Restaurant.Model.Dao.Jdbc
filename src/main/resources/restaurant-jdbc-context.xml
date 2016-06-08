@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation=
-               "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+               "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
-
-    <!-- DB-CONTEXT, intentionally do not exclude from here and store in the separate context-file such as "db-context.xml" -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:jdbc.properties"/>
     </bean>
@@ -60,10 +55,6 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean class="com.company.restaurant.controllers.StateGraphRules" id="stateGraphRules">
-        <property name="stateGraphDao" ref="stateGraphDao"/>
-    </bean>
-
     <bean class="com.company.restaurant.dao.jdbc.JdbcOrderDao" id="orderDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
@@ -87,43 +78,4 @@
     <bean class="com.company.restaurant.dao.jdbc.JdbcWarehouseDao" id="warehouseDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-
-    <bean class="com.company.restaurant.controllers.MenuController" id="menuController">
-        <property name="menuDao" ref="menuDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.TableController" id="tableController">
-        <property name="txManager" ref="txManager"/>
-        <property name="tableDao" ref="tableDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.EmployeeController" id="employeeController">
-        <property name="jobPositionDao" ref="jobPositionDao"/>
-        <property name="employeeDao" ref="employeeDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.CourseController" id="courseController">
-        <property name="courseCategoryDao" ref="courseCategoryDicDao"/>
-        <property name="courseDao" ref="courseDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.OrderController" id="orderController">
-        <property name="txManager" ref="txManager"/>
-        <property name="orderDao" ref="orderDao"/>
-        <property name="stateGraphRules" ref="stateGraphRules"/>
-        <property name="orderCourseDao" ref="orderCourseDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.WarehouseController" id="warehouseController">
-        <property name="txManager" ref="txManager"/>
-        <property name="ingredientDao" ref="ingredientDao"/>
-        <property name="portionDao" ref="portionDao"/>
-        <property name="warehouseDao" ref="warehouseDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.controllers.KitchenController" id="kitchenController">
-        <property name="txManager" ref="txManager"/>
-        <property name="cookedCourseDao" ref="cookedCourseDao"/>
-    </bean>
-    <!-- END OF DB-CONTEXT -->
 </beans>
