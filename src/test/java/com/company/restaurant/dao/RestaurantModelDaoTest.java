@@ -185,7 +185,6 @@ public abstract class RestaurantModelDaoTest {
                     ", Job position name :" + jobPosition.getName());
         }
 
-
         String firstName = Util.getRandomString();
         String secondName = Util.getRandomString();
         Employee employee = new Employee();
