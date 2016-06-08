@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by Yevgen on 10.01.2016.
  */
-public class ObjectService {
+public class  ObjectService {
     private static final String GET_PREFIX = "get";
 
     private static String[] getPublicMethodNameList(Object object, String methodPrefix) {
