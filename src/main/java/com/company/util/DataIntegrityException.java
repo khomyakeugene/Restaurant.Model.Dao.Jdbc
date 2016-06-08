@@ -1,7 +1,5 @@
 package com.company.util;
 
-import java.sql.SQLException;
-
 /**
  * Created by Yevhen on 22.05.2016.
  */

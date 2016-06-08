@@ -18,7 +18,7 @@ public class Util {
         return Math.round(value * decimalPower) / decimalPower;
     }
 
-    public static float getRandomFloat(int upperBound) {
+    private static float getRandomFloat(int upperBound) {
         return round(random.nextFloat() * upperBound, DECIMAL_PRECISION);
     }
 
@@ -30,11 +30,7 @@ public class Util {
         return random.nextInt(DEFAULT_UPPER_BOUND);
     }
 
-    public static boolean getRandomBoolean() {
-        return random.nextBoolean();
-    }
-
-    public static String getRandomString(int length) {
+    private static String getRandomString(int length) {
         char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
         StringBuilder sb = new StringBuilder();
