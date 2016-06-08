@@ -2,7 +2,6 @@ package com.company.restaurant.controllers;
 
 import com.company.restaurant.dao.*;
 import com.company.restaurant.model.*;
-import com.company.util.ObjectService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,11 +13,9 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Yevhen on 20.05.2016.
+ * Created by Yevhen on 08.06.2016.
  */
-public class RestaurantModelDaoTest {
-    private final static String APPLICATION_CONTEXT_NAME = "restaurant-jdbc-context.xml";
-
+public abstract class RestaurantModelDaoTest {
     private static JobPositionDao jobPositionDao;
     private static EmployeeDao employeeDao;
     private static MenuDao menuDao;
@@ -44,7 +41,7 @@ public class RestaurantModelDaoTest {
         return employeeDao.findAllEmployees().get(0);
     }
 
-    private int jobPositionId() {
+    private static int jobPositionId() {
         return jobPositionDao.findAllJobPositions().get(0).getId();
     }
 
@@ -127,9 +124,18 @@ public class RestaurantModelDaoTest {
         courseDao.delCourse(closedOrderCourseName2);
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(APPLICATION_CONTEXT_NAME);
+    public static void initEnvironment() throws Exception {
+        prepareTestCourse();
+        prepareClosedOrder();
+    }
+
+    private static void tearDownEnvironment() throws Exception {
+        delTestCourse();
+        clearClosedOrder();
+    }
+
+    protected static void initDataSource(String configLocation) throws Exception {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
 
         menuDao = applicationContext.getBean(MenuDao.class);
         tableDao = applicationContext.getBean(TableDao.class);
@@ -143,17 +149,18 @@ public class RestaurantModelDaoTest {
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
         warehouseDao = applicationContext.getBean(WarehouseDao.class);
+    }
 
-        prepareTestCourse();
-        prepareClosedOrder();
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        initDataSource(null); // intentionally, to generate exception if use this code directly
+
+        initEnvironment();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        delTestCourse();
-        clearClosedOrder();
-
-        System.out.println("tearDownClass finished!");
+        tearDownEnvironment();
     }
 
     @Test(timeout = 2000)
@@ -172,7 +179,7 @@ public class RestaurantModelDaoTest {
         jobPositionDao.delJobPosition(name);
     }
 
-    @Test//(timeout = 2000)
+    @Test(timeout = 2000)
     public void addFindDelEmployeeTest() throws Exception {
         for (JobPosition jobPosition : jobPositionDao.findAllJobPositions()) {
             System.out.println("Job position Id :" + jobPosition.getId() +
