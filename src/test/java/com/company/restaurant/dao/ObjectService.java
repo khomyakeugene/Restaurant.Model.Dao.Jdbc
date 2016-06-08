@@ -1,11 +1,11 @@
-package com.company.restaurant.controllers;
+package com.company.restaurant.dao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- * Created by Yevgen on 10.01.2016.
+ * Created by Yevhen on 08.06.2016.
  */
 public class ObjectService {
     private static final String GET_PREFIX = "get";

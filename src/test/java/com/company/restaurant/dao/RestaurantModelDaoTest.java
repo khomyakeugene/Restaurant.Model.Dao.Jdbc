@@ -1,6 +1,5 @@
-package com.company.restaurant.controllers;
+package com.company.restaurant.dao;
 
-import com.company.restaurant.dao.*;
 import com.company.restaurant.model.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
