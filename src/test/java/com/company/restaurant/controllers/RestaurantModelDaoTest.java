@@ -393,19 +393,16 @@ public class RestaurantModelDaoTest {
 
     @Test(timeout = 2000)
     public void closedOrderTest_1() throws Exception {
-        // <DataIntegrityException> should be generated next
         orderDao.delOrder(closedOrder);
     }
 
     @Test(timeout = 2000)
     public void closedOrderTest_2() throws Exception {
-        // <DataIntegrityException> should be generated next
         orderCourseDao.addCourseToOrder(closedOrder, closedOrderCourse2, 1);
     }
 
     @Test(timeout = 2000)
     public void closedOrderTest_3() throws Exception {
-        // <DataIntegrityException> should be generated next
         orderCourseDao.takeCourseFromOrder(closedOrder, closedOrderCourse1, 1);
     }
 
