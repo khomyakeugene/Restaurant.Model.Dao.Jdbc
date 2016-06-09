@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.DaoTable;
+import com.company.restaurant.dao.proto.DaoTable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
