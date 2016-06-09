@@ -1,9 +1,11 @@
 package com.company.restaurant.dao.jdbc;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +13,8 @@ import java.util.Map;
 /**
  * Created by Yevhen on 21.05.2016.
  */
-public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
+public abstract class JdbcDaoTable<T> {
+    public static final String SQL_MAX_STATEMENT = "MAX(%s)";
     private static final String SQL_ALL_FIELD_OF_ALL_RECORDS = "SELECT * FROM \"%s\"";
     private static final String SQL_SELECT_BY_FIELD_VALUE = "SELECT %s FROM \"%s\" WHERE (%s = %s)";
     private static final String SQL_SELECT_BY_TWO_FIELD_VALUE = "SELECT %s FROM \"%s\" WHERE (%s = %s) AND (%s = %s)";
@@ -23,9 +26,25 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
     protected String tableName;
     protected String viewName;
     protected String orderByCondition;
+    protected DataSource dataSource;
 
     public JdbcDaoTable() {
         initMetadata();
+    }
+
+    public static String toString(Object object) {
+        String result;
+
+        if (object == null) {
+            result = "null";
+        } else {
+            result = object.toString();
+            if (object instanceof String) {
+                result =  "'" + result + "'";
+            }
+        }
+
+        return result;
     }
 
     protected abstract void initMetadata();
@@ -55,7 +74,7 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
 
     private String fieldQueryCondition(String fieldName, Object value, String selectFields) {
         return String.format(SQL_SELECT_BY_FIELD_VALUE, selectFields, getViewName(), fieldName,
-                JdbcDao.toString(value)) + orderByCondition(selectFields);
+                JdbcDaoTable.toString(value)) + orderByCondition(selectFields);
     }
 
     private String fieldQueryCondition(String fieldName, Object value) {
@@ -64,8 +83,8 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
 
     protected String twoFieldsFromTableQueryCondition(String fieldName_1, Object value_1, String fieldName_2, Object value_2,
                                                       String selectFields) {
-        return String.format(SQL_SELECT_BY_TWO_FIELD_VALUE, selectFields, getTableName(), fieldName_1, JdbcDao.toString(value_1),
-                fieldName_2, JdbcDao.toString(value_2)) + orderByCondition(selectFields);
+        return String.format(SQL_SELECT_BY_TWO_FIELD_VALUE, selectFields, getTableName(), fieldName_1, JdbcDaoTable.toString(value_1),
+                fieldName_2, JdbcDaoTable.toString(value_2)) + orderByCondition(selectFields);
     }
 
     private String twoFieldsFromTableQueryCondition(String fieldName_1, Object value_1, String fieldName_2, Object value_2) {
@@ -75,7 +94,7 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
     private String twoFieldsFromViewQueryCondition(String fieldName_1, Object value_1, String fieldName_2, Object value_2,
                                                    String selectFields) {
         return String.format(SQL_SELECT_BY_TWO_FIELD_VALUE, selectFields, getViewName(), fieldName_1,
-                JdbcDao.toString(value_1), fieldName_2, JdbcDao.toString(value_2)) + orderByCondition(selectFields);
+                JdbcDaoTable.toString(value_1), fieldName_2, JdbcDaoTable.toString(value_2)) + orderByCondition(selectFields);
     }
 
     private String twoFieldsFromViewQueryCondition(String fieldName_1, Object value_1, String fieldName_2, Object value_2) {
@@ -135,7 +154,7 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
     }
 
     private String buildDeleteExpression(String fieldName, Object value) {
-        return String.format(SQL_DELETE_EXPRESSION_PATTERN, tableName, fieldName, JdbcDao.toString(value));
+        return String.format(SQL_DELETE_EXPRESSION_PATTERN, tableName, fieldName, JdbcDaoTable.toString(value));
     }
 
     public String delRecordByFieldCondition(String fieldName, Object value) {
@@ -171,7 +190,7 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
         String fieldSequence = String.join(",",
                 (CharSequence[]) clarifiedDBMap.keySet().stream().toArray(String[]::new));
         String valueSequence = String.join(",",
-                (CharSequence[]) clarifiedDBMap.values().stream().map(v -> (JdbcDao.toString(v))).toArray(String[]::new));
+                (CharSequence[]) clarifiedDBMap.values().stream().map(v -> (JdbcDaoTable.toString(v))).toArray(String[]::new));
 
         return String.format(pattern, fieldSequence, valueSequence);
     }
@@ -183,5 +202,64 @@ public abstract class JdbcDaoTable<T> extends JdbcDao<T> {
                 conditionFieldName, toString(conditionFieldValue));
 
         executeUpdate(query);
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    protected void databaseError(Exception e) {
+        throw new RuntimeException(e);
+    }
+
+    protected abstract T newObject(ResultSet resultSet) throws SQLException;
+
+    private T createObject(ResultSet resultSet) {
+        T result = null;
+
+        if (resultSet != null) {
+            try {
+                result = newObject(resultSet);
+            } catch (SQLException e) {
+                databaseError(e);
+            }
+        }
+
+        return result;
+    }
+
+    protected List<T> createObjectListFromQuery(String query) {
+        ArrayList<T> result = new ArrayList<>();
+
+        try(Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                result.add(createObject(resultSet));
+            }
+        } catch (SQLException e) {
+            databaseError(e);
+        }
+
+        return result;
+    }
+
+    private T createObjectFromQuery(String query) {
+        List<T> objectList = createObjectListFromQuery(query);
+
+        return (objectList.size() > 0) ? objectList.get(0) : null;
+    }
+
+    public String executeUpdate(String query) {
+        String result = null;
+
+        try(Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            result = e.getMessage();
+        }
+
+        return result;
     }
 }
