@@ -1,4 +1,4 @@
-package com.company.restaurant.dao.jdbc;
+package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.restaurant.model.IntegerLinkObject;
 
@@ -10,11 +10,11 @@ public abstract class JdbcDaoQuantityLinkTable<T extends IntegerLinkObject> exte
         return selectCurrentAmount(firstId, secondId).intValue();
     }
 
-    public void increaseQuantity(int firstId, int secondId, int increasePortion) {
+    protected void increaseQuantity(int firstId, int secondId, int increasePortion) {
         increaseAmount(firstId, secondId, increasePortion);
     }
 
-    public void decreaseQuantity(int firstId, int secondId, int decreasePortion) {
+    protected void decreaseQuantity(int firstId, int secondId, int decreasePortion) {
         decreaseAmount(firstId, secondId, decreasePortion);
     }
 }

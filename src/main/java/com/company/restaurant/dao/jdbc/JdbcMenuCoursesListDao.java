@@ -1,6 +1,7 @@
 package com.company.restaurant.dao.jdbc;
 
 import com.company.restaurant.dao.MenuCoursesListDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoLinkTable;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Menu;
 import com.company.restaurant.model.MenuCourseList;

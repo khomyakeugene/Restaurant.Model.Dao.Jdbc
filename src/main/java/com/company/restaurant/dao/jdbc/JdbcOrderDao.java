@@ -1,6 +1,7 @@
 package com.company.restaurant.dao.jdbc;
 
 import com.company.restaurant.dao.OrderDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
 import com.company.restaurant.model.Order;
 
 import java.sql.ResultSet;

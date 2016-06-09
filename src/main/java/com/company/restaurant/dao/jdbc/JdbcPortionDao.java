@@ -1,7 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.Portion;
 import com.company.restaurant.dao.PortionDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
+import com.company.restaurant.model.Portion;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

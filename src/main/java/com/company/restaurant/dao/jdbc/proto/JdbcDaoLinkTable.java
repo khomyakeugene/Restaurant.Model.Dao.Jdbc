@@ -1,4 +1,4 @@
-package com.company.restaurant.dao.jdbc;
+package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.restaurant.model.LinkObject;
 

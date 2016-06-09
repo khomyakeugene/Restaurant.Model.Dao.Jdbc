@@ -1,7 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.CourseCategory;
 import com.company.restaurant.dao.CourseCategoryDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableSimpleDic;
+import com.company.restaurant.model.CourseCategory;
 
 import java.util.List;
 

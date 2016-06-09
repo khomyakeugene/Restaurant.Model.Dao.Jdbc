@@ -1,7 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.JobPosition;
 import com.company.restaurant.dao.JobPositionDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableSimpleDic;
+import com.company.restaurant.model.JobPosition;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
 package com.company.restaurant.dao.jdbc;
 
+import com.company.restaurant.dao.WarehouseDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoAmountLinkTable;
 import com.company.restaurant.model.Ingredient;
 import com.company.restaurant.model.Portion;
 import com.company.restaurant.model.Warehouse;
-import com.company.restaurant.dao.WarehouseDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

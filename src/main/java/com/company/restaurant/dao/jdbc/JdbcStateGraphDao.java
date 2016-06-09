@@ -1,7 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.StateGraph;
 import com.company.restaurant.dao.StateGraphDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTable;
+import com.company.restaurant.model.StateGraph;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

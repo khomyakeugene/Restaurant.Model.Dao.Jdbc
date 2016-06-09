@@ -1,7 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.Ingredient;
 import com.company.restaurant.dao.IngredientDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableSimpleDic;
+import com.company.restaurant.model.Ingredient;
 
 import java.util.List;
 

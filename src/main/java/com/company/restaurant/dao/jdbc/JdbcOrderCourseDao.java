@@ -1,7 +1,10 @@
 package com.company.restaurant.dao.jdbc;
 
 import com.company.restaurant.dao.OrderCourseDao;
-import com.company.restaurant.model.*;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoQuantityLinkTable;
+import com.company.restaurant.model.Course;
+import com.company.restaurant.model.Order;
+import com.company.restaurant.model.OrderCourse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.company.restaurant.dao.jdbc;
+package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.restaurant.dao.proto.DaoTable;
 
@@ -120,7 +120,7 @@ public abstract class JdbcDaoTable<T> extends DaoTable {
         return createObjectListFromQuery(allQueryCondition());
     }
 
-    public String getOneFieldByFieldCondition(String selectedField, String fieldName, Object value) {
+    protected String getOneFieldByFieldCondition(String selectedField, String fieldName, Object value) {
         String result = null;
 
         try (Connection connection = dataSource.getConnection();

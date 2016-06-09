@@ -1,8 +1,11 @@
-package com.company.restaurant.dao.jdbc;
+package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.util.DataIntegrityException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.AbstractMap;
 import java.util.Map;
 
@@ -25,7 +28,7 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
         return findObjectByFieldCondition(idFieldName, id);
     }
 
-    public T findObjectByName(String name) {
+    protected T findObjectByName(String name) {
         return findObjectByFieldCondition(nameFieldName, name);
     }
 
@@ -84,15 +87,15 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
         return delRecordByFieldCondition(keyFieldData.getKey(), keyFieldData.getValue());
     }
 
-    public String delRecordById(int id) {
+    protected String delRecordById(int id) {
         return delRecordByFieldCondition(idFieldName, id);
     }
 
-    public String delRecordByName(String name) {
+    protected String delRecordByName(String name) {
         return delRecordByFieldCondition(nameFieldName, name);
     }
 
-    public T updRecord(T object, String updateFieldName, Object updateFieldValue) {
+    protected T updRecord(T object, String updateFieldName, Object updateFieldValue) {
         AbstractMap.SimpleEntry<String, Object> keyFieldData = getKeyFieldNameAndFieldValue(object);
 
         String keyFieldName = keyFieldData.getKey();
