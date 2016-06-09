@@ -14,7 +14,6 @@ public class JdbcJobPositionDao extends JdbcDaoTableSimpleDic<JobPosition> imple
     private static final String JOB_POSITION_ID_FIELD_NAME = "job_position_id";
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY job_position_id";
 
-
     @Override
     protected void initMetadata() {
         super.initMetadata();
