@@ -1,5 +1,7 @@
 package com.company.restaurant.dao.jdbc;
 
+import com.company.restaurant.dao.DaoTable;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -134,10 +136,6 @@ public abstract class JdbcDaoTable<T> extends DaoTable {
         return result;
     }
 
-    private String buildDeleteExpression(String fieldName, Object value) {
-        return String.format(SQL_DELETE_EXPRESSION_PATTERN, tableName, fieldName, DaoTable.toString(value));
-    }
-
     public String delRecordByFieldCondition(String fieldName, Object value) {
         String result = null;
 
@@ -178,10 +176,7 @@ public abstract class JdbcDaoTable<T> extends DaoTable {
 
     protected void updateOneFieldByOneFieldCondition(String updateFieldName, Object updateFieldValue,
                                                      String conditionFieldName, Object conditionFieldValue) {
-        String query = String.format(SQL_UPDATE_BY_FIELD_VALUE, tableName,
-                String.format(SQL_UPDATE_SET_SECTION_PART_PATTERN, updateFieldName, toString(updateFieldValue)),
-                conditionFieldName, toString(conditionFieldValue));
-
-        executeUpdate(query);
+        executeUpdate(buildOneFieldByOneFieldUpdateCondition(updateFieldName, updateFieldValue,
+                conditionFieldName, conditionFieldValue));
     }
 }

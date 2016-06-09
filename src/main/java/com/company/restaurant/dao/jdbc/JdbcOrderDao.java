@@ -1,7 +1,7 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.model.Order;
 import com.company.restaurant.dao.OrderDao;
+import com.company.restaurant.model.Order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,7 +87,7 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
 
     @Override
     public String orderEntityName() {
-        return getTableName();
+        return tableName;
     }
 
     @Override

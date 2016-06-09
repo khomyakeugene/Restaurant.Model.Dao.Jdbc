@@ -1,9 +1,9 @@
 package com.company.restaurant.dao.jdbc;
 
+import com.company.restaurant.dao.MenuCoursesListDao;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Menu;
 import com.company.restaurant.model.MenuCourseList;
-import com.company.restaurant.dao.MenuCoursesListDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +38,8 @@ public class JdbcMenuCoursesListDao extends JdbcDaoLinkTable<MenuCourseList> imp
     }
 
     private int getMaxCourseNumberInMenu(Menu menu) {
-        String selectResult = getOneFieldByFieldCondition(String.format(SQL_MAX_STATEMENT, COURSE_NUMBER_FIELD_NAME),
+        String selectResult = getOneFieldByFieldCondition(
+                maxFieldValueExpression(COURSE_NUMBER_FIELD_NAME),
                 firstIdFieldName, menu.getId());
 
         return (selectResult == null) || selectResult.equals("") ? 0 : Integer.parseInt(selectResult);
