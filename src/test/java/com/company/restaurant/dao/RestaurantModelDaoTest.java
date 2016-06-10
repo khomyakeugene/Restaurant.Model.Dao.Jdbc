@@ -215,9 +215,6 @@ public abstract class RestaurantModelDaoTest {
 
         employeeDao.delEmployee(employee);
         assertTrue(employeeDao.findEmployeeById(employeeId) == null);
-        // Test delete of non-existent data
-        employeeDao.delEmployee(employee);
-        employeeDao.delEmployee(employee.getEmployeeId());
     }
 
     @Test(timeout = 2000)
@@ -315,8 +312,6 @@ public abstract class RestaurantModelDaoTest {
 
         menuDao.delMenu(name);
         assertTrue(menuDao.findMenuByName(name) == null);
-        // Test delete of non-existent data
-        menuDao.delMenu(menu);
     }
 
     @Test(timeout = 2000)
