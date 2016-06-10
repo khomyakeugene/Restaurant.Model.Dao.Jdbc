@@ -178,15 +178,15 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(jobPositionDao.findJobPositionByName(name) == null);
         // Test delete of non-existent data
         jobPositionDao.delJobPosition(name);
+
+        for (JobPosition jP : jobPositionDao.findAllJobPositions()) {
+            System.out.println("Job position Id :" + jP.getId() +
+                    ", Job position name :" + jP.getName());
+        }
     }
 
     @Test(timeout = 2000)
     public void addFindDelEmployeeTest() throws Exception {
-        for (JobPosition jobPosition : jobPositionDao.findAllJobPositions()) {
-            System.out.println("Job position Id :" + jobPosition.getId() +
-                    ", Job position name :" + jobPosition.getName());
-        }
-
         String firstName = Util.getRandomString();
         String secondName = Util.getRandomString();
         Employee employee = new Employee();
