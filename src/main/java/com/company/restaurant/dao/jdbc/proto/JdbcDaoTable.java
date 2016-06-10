@@ -169,7 +169,7 @@ public abstract class JdbcDaoTable<T> extends DaoTable {
         String fieldSequence = String.join(",",
                 (CharSequence[]) clarifiedDBMap.keySet().stream().toArray(String[]::new));
         String valueSequence = String.join(",",
-                (CharSequence[]) clarifiedDBMap.values().stream().map(v -> (DaoTable.toString(v))).toArray(String[]::new));
+                (CharSequence[]) clarifiedDBMap.values().stream().map(v -> (toString(v))).toArray(String[]::new));
 
         return String.format(pattern, fieldSequence, valueSequence);
     }
