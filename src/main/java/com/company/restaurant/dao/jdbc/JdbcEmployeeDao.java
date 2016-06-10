@@ -118,7 +118,7 @@ public class JdbcEmployeeDao extends JdbcDaoTableWithId<Employee> implements Emp
     }
 
     @Override
-    public Employee findEmployeeById(int id) {
-        return findObjectById(id);
+    public Employee findEmployeeById(int employeeId) {
+        return findObjectById(employeeId);
     }
 }
