@@ -28,7 +28,6 @@ public class JdbcMenuCoursesListDao extends JdbcDaoLinkTable<MenuCourseList> imp
     private static final String COURSE_CATEGORY_NAME_FIELD_NAME = "course_category_name";
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY menu_id, course_id";
 
-
     @Override
     protected void initMetadata() {
         this.tableName = MENU_COURSES_LIST_TABLE_NAME;
