@@ -30,12 +30,6 @@ public abstract class RestaurantModelDaoTest {
     private static PortionDao portionDao;
     private static WarehouseDao warehouseDao;
 
-    private static int closedOrderId;
-    private static Order closedOrder;
-    private static String closedOrderCourseName1;
-    private static Course closedOrderCourse1;
-    private static String closedOrderCourseName2;
-    private static Course closedOrderCourse2;
     private static Course testCourse;
 
     private static Employee employee() {
@@ -80,59 +74,13 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(testCourse);
     }
 
-    private static void prepareClosedOrder() throws Exception {
-        Order order = new Order();
-        order.setTableId(tableId());
-        order.setEmployeeId(employeeId());
-        order.setOrderNumber(Util.getRandomString());
-        order.setStateType("A");
-        closedOrderId = orderDao.addOrder(order).getOrderId();
-
-        // Courses for closed order ----------------------------
-        closedOrderCourseName1 = Util.getRandomString();
-        closedOrderCourse1 = new Course();
-        closedOrderCourse1.setCategoryId(courseCategoryId());
-        closedOrderCourse1.setName(closedOrderCourseName1);
-        closedOrderCourse1.setWeight(Util.getRandomFloat());
-        closedOrderCourse1.setCost(Util.getRandomFloat());
-        closedOrderCourse1 = courseDao.addCourse(closedOrderCourse1);
-
-        closedOrderCourseName2 = Util.getRandomString();
-        closedOrderCourse2 = new Course();
-        closedOrderCourse2.setCategoryId(courseCategoryId());
-        closedOrderCourse2.setName(closedOrderCourseName2);
-        closedOrderCourse2.setWeight(Util.getRandomFloat());
-        closedOrderCourse2.setCost(Util.getRandomFloat());
-        closedOrderCourse2 = courseDao.addCourse(closedOrderCourse2);
-        // ----------
-
-        orderCourseDao.addCourseToOrder(order, closedOrderCourse1, 1);
-
-        closedOrder = orderDao.updOrderState(order, "B");
-    }
-
-    private static void clearClosedOrder() throws Exception {
-        Order order = orderDao.findOrderById(closedOrderId);
-        if (order != null) {
-            // Manually change order state to "open"
-            order = orderDao.updOrderState(order, "A");
-            // Delete "open" order
-            orderDao.delOrder(order);
-        }
-
-        // Delete course for closed order
-        courseDao.delCourse(closedOrderCourseName1);
-        courseDao.delCourse(closedOrderCourseName2);
-    }
 
     public static void initEnvironment() throws Exception {
         prepareTestCourse();
-        prepareClosedOrder();
     }
 
     private static void tearDownEnvironment() throws Exception {
         delTestCourse();
-        clearClosedOrder();
     }
 
     protected static void initDataSource(String configLocation) throws Exception {
@@ -403,21 +351,6 @@ public abstract class RestaurantModelDaoTest {
 
         orderDao.delOrder(order);
         assertTrue(orderDao.findOrderById(orderId) == null);
-    }
-
-    @Test(timeout = 2000)
-    public void closedOrderTest_1() throws Exception {
-        orderDao.delOrder(closedOrder);
-    }
-
-    @Test(timeout = 2000)
-    public void closedOrderTest_2() throws Exception {
-        orderCourseDao.addCourseToOrder(closedOrder, closedOrderCourse2, 1);
-    }
-
-    @Test(timeout = 2000)
-    public void closedOrderTest_3() throws Exception {
-        orderCourseDao.takeCourseFromOrder(closedOrder, closedOrderCourse1, 1);
     }
 
     @Test(timeout = 2000)
