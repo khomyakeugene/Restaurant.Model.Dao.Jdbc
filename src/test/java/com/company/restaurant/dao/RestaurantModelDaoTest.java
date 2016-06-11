@@ -179,7 +179,9 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(name);
 
         // Whole course list
-        courseDao.findAllCourses();
+        for (Course course1 : courseDao.findAllCourses()) {
+            System.out.println("Course: id: " + course1.getCourseId() + ", name: " + course1.getName());
+        }
     }
 
     @Test(timeout = 2000)
@@ -256,6 +258,12 @@ public abstract class RestaurantModelDaoTest {
                 tableDao.findTableByNumber(table.getNumber())));
         assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(table,
                 tableDao.findTableById(table.getTableId())));
+
+        // Whole table list
+        for (Table table1 : tableDao.findAllTables()) {
+            System.out.println("Course: id: " + table1.getId() + ", name: " + table1.getName() +
+                    ", name: " + table1.getNumber());
+        }
 
         tableDao.delTable(table);
         assertTrue(tableDao.findTableByNumber(table.getNumber()) == null);
