@@ -1,7 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.restaurant.dao.proto.DaoTable;
-import com.company.util.Util;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 21.05.2016.
  */
-public abstract class JdbcDaoTable<T> extends DaoTable {
+public abstract class JdbcDaoTable<T> extends DaoTable<T> {
 
     protected DataSource dataSource;
 
@@ -67,7 +66,7 @@ public abstract class JdbcDaoTable<T> extends DaoTable {
     }
 
     private T createObjectFromQuery(String query) {
-        return Util.getFirstFromList(createObjectListFromQuery(query));
+        return getFirstFromList(createObjectListFromQuery(query));
     }
 
     public String executeUpdate(String query) {

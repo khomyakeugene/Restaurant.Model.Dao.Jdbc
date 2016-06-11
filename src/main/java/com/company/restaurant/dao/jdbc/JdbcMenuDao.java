@@ -1,11 +1,11 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.MenuCoursesListDao;
+import com.company.restaurant.dao.MenuCoursesViewDao;
 import com.company.restaurant.dao.MenuDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableSimpleDic;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Menu;
-import com.company.restaurant.model.MenuCourseList;
+import com.company.restaurant.model.MenuCourseView;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ public class JdbcMenuDao extends JdbcDaoTableSimpleDic<Menu> implements MenuDao 
     private static final String MENU_ID_FIELD_NAME = "menu_id";
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY menu_id";
 
-    private MenuCoursesListDao menuCourseListDao;
+    private MenuCoursesViewDao menuCourseViewDao;
 
-    public void setMenuCourseListDao(MenuCoursesListDao menuCourseListDao) {
-        this.menuCourseListDao = menuCourseListDao;
+    public void setMenuCourseViewDao(MenuCoursesViewDao menuCourseViewDao) {
+        this.menuCourseViewDao = menuCourseViewDao;
     }
 
     @Override
@@ -69,21 +69,21 @@ public class JdbcMenuDao extends JdbcDaoTableSimpleDic<Menu> implements MenuDao 
 
     @Override
     public void addCourseToMenu(Menu menu, Course course) {
-        menuCourseListDao.addCourseToMenu(menu, course);
+        menuCourseViewDao.addCourseToMenu(menu, course);
     }
 
     @Override
     public void delCourseFromMenu(Menu menu, Course course) {
-        menuCourseListDao.delCourseFromMenu(menu, course);
+        menuCourseViewDao.delCourseFromMenu(menu, course);
     }
 
     @Override
-    public List<MenuCourseList> findMenuCourses(Menu menu) {
-        return menuCourseListDao.findMenuCourses(menu);
+    public List<MenuCourseView> findMenuCourses(Menu menu) {
+        return menuCourseViewDao.findMenuCourses(menu);
     }
 
     @Override
-    public MenuCourseList findMenuCourseByCourseId(Menu menu, int courseId) {
-        return menuCourseListDao.findMenuCourseByCourseId(menu, courseId);
+    public MenuCourseView findMenuCourseByCourseId(Menu menu, int courseId) {
+        return menuCourseViewDao.findMenuCourseByCourseId(menu, courseId);
     }
 }

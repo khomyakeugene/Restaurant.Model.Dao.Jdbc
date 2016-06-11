@@ -38,13 +38,13 @@
         <property name="courseCategoryDao" ref="courseCategoryDicDao"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcMenuCoursesListDao" id="menuCourseListDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcMenuCoursesViewDao" id="menuCourseViewDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcMenuDao" id="menuDao">
         <property name="dataSource" ref="dataSource"/>
-        <property name="menuCourseListDao" ref="menuCourseListDao"/>
+        <property name="menuCourseViewDao" ref="menuCourseViewDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcTableDao" id="tableDao">

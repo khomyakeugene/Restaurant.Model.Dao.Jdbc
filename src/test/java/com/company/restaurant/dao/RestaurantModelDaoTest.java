@@ -214,7 +214,7 @@ public abstract class RestaurantModelDaoTest {
         menuDao.addCourseToMenu(menu, course1);
         menuDao.addCourseToMenu(menu, course2);
 
-        for (MenuCourseList menuCourseList : menuDao.findMenuCourses(menu)) {
+        for (MenuCourseView menuCourseList : menuDao.findMenuCourses(menu)) {
             menuDao.findMenuCourseByCourseId(menu, menuCourseList.getCourseId());
             System.out.println(menuCourseList.getCourseName() + ": " + menuCourseList.getCourseCategoryName());
         }
