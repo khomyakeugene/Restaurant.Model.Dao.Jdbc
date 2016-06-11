@@ -30,8 +30,6 @@ public abstract class RestaurantModelDaoTest {
     private static PortionDao portionDao;
     private static WarehouseDao warehouseDao;
 
-    private static Course testCourse;
-
     private static Employee employee() {
         return employeeDao.findAllEmployees().get(0);
     }
@@ -58,30 +56,6 @@ public abstract class RestaurantModelDaoTest {
         return tableList.get(tableList.size()-1).getTableId();
     }
 
-    private static Course prepareTestCourse() {
-        testCourse = new Course();
-        testCourse.setCategoryId(courseCategoryId());
-        testCourse.setName(Util.getRandomString());
-        testCourse.setWeight(Util.getRandomFloat());
-        testCourse.setCost(Util.getRandomFloat());
-
-        testCourse = courseDao.addCourse(testCourse);
-
-        return testCourse;
-    }
-
-    private static void delTestCourse() {
-        courseDao.delCourse(testCourse);
-    }
-
-
-    public static void initEnvironment() throws Exception {
-        prepareTestCourse();
-    }
-
-    private static void tearDownEnvironment() throws Exception {
-        delTestCourse();
-    }
 
     protected static void initDataSource(String configLocation) throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(configLocation);
@@ -103,13 +77,10 @@ public abstract class RestaurantModelDaoTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         initDataSource(null); // intentionally, to generate exception if use this code directly
-
-        initEnvironment();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        tearDownEnvironment();
     }
 
     @Test(timeout = 2000)
@@ -355,11 +326,21 @@ public abstract class RestaurantModelDaoTest {
 
     @Test(timeout = 2000)
     public void addCookedCourse() throws Exception {
+        Course testCourse = new Course();
+        testCourse.setCategoryId(courseCategoryId());
+        testCourse.setName(Util.getRandomString());
+        testCourse.setWeight(Util.getRandomFloat());
+        testCourse.setCost(Util.getRandomFloat());
+
+        testCourse = courseDao.addCourse(testCourse);
+
         cookedCourseDao.addCookedCourse(testCourse, employee(), Util.getRandomFloat());
 
         for (CookedCourse cookedCourse : cookedCourseDao.findAllCookedCourses()) {
             System.out.println(cookedCourse.getCourseName() + " : " + cookedCourse.getCookDatetime());
         }
+
+        courseDao.delCourse(testCourse);
     }
 
     @Test(timeout = 10000)

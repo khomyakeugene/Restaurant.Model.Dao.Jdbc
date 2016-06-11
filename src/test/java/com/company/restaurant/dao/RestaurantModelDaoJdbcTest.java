@@ -11,7 +11,5 @@ public class RestaurantModelDaoJdbcTest extends RestaurantModelDaoTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         initDataSource(APPLICATION_CONTEXT_NAME);
-
-        initEnvironment();
     }
 }
