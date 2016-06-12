@@ -260,8 +260,8 @@ public abstract class RestaurantModelDaoTest {
 
         // Whole table list
         for (Table table1 : tableDao.findAllTables()) {
-            System.out.println("Course: id: " + table1.getId() + ", name: " + table1.getName() +
-                    ", name: " + table1.getNumber());
+            System.out.println("Table: id: " + table1.getId() + ", name: " + table1.getName() +
+                    ", number: " + table1.getNumber());
         }
 
         tableDao.delTable(table);
