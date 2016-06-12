@@ -1,8 +1,8 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.OrderDao;
+import com.company.restaurant.dao.OrderViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
-import com.company.restaurant.model.Order;
+import com.company.restaurant.model.OrderView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 22.05.2016.
  */
-public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao {
+public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements OrderViewDao {
     private static final String ORDER_TABLE_NAME = "order";
     private static final String ORDER_VIEW_NAME = "v_order";
     private static final String ORDER_ID_FIELD_NAME = "order_id";
@@ -43,26 +43,26 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
     }
 
     @Override
-    protected void setId(int id, Order order) {
-        order.setOrderId(id);
+    protected void setId(int id, OrderView orderView) {
+        orderView.setOrderId(id);
     }
 
     @Override
-    protected Map<String, Object> objectToDBMap(Order order) {
+    protected Map<String, Object> objectToDBMap(OrderView orderView) {
         HashMap<String, Object> result = new HashMap<>();
 
-        result.put(TABLE_ID_FIELD_NAME, order.getTableId());
-        result.put(STATE_TYPE_FIELD_NAME, order.getStateType());
-        result.put(EMPLOYEE_ID_FIELD_NAME, order.getEmployeeId());
-        result.put(ORDER_NUMBER_FIELD_NAME, order.getOrderNumber());
-        result.put(ORDER_DATETIME_FIELD_NAME, order.getOrderDatetime());
+        result.put(TABLE_ID_FIELD_NAME, orderView.getTableId());
+        result.put(STATE_TYPE_FIELD_NAME, orderView.getStateType());
+        result.put(EMPLOYEE_ID_FIELD_NAME, orderView.getEmployeeId());
+        result.put(ORDER_NUMBER_FIELD_NAME, orderView.getOrderNumber());
+        result.put(ORDER_DATETIME_FIELD_NAME, orderView.getOrderDatetime());
 
         return result;
     }
 
     @Override
-    protected Order newObject(ResultSet resultSet) throws SQLException {
-        Order result = new Order();
+    protected OrderView newObject(ResultSet resultSet) throws SQLException {
+        OrderView result = new OrderView();
         result.setOrderId(resultSet.getInt(ORDER_ID_FIELD_NAME));
         result.setTableId(resultSet.getInt(TABLE_ID_FIELD_NAME));
         result.setStateType(resultSet.getString(STATE_TYPE_FIELD_NAME));
@@ -91,39 +91,39 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
         return tableName;
     }
 
+
     @Override
-    public Order addOrder(Order order) {
-        return addRecord(order);
+    public OrderView addOrder(OrderView orderView) {
+        return addRecord(orderView);
     }
 
     @Override
-    public String delOrder(Order order) {
-        return delRecord(order);
+    public String delOrder(OrderView orderView) {
+        return delRecord(orderView);
     }
 
     @Override
-    public Order findOrderById(int id) {
+    public OrderView findOrderById(int id) {
         return findObjectById(id);
     }
 
     @Override
-    public List<Order> findOrderByNumber(String orderNumber) {
+    public List<OrderView> findOrderByNumber(String orderNumber) {
         return findObjectsByFieldCondition(ORDER_NUMBER_FIELD_NAME, orderNumber);
     }
 
     @Override
-    public List<Order> findAllOrders() {
+    public List<OrderView> findAllOrders() {
         return findAllObjects();
     }
 
     @Override
-    public List<Order> findAllOrders(String stateType) {
+    public List<OrderView> findAllOrders(String stateType) {
         return findObjectsByFieldCondition(STATE_TYPE_FIELD_NAME, stateType) ;
     }
 
     @Override
-    public Order updOrderState(Order order, String stateType) {
-        return updRecord(order, STATE_TYPE_FIELD_NAME, stateType);
+    public OrderView updOrderState(OrderView orderView, String stateType) {
+        return updRecord(orderView, STATE_TYPE_FIELD_NAME, stateType);
     }
-
 }

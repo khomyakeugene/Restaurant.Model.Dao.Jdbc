@@ -24,7 +24,7 @@ public abstract class RestaurantModelDaoTest {
     private static CourseDao courseDao;
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseDao cookedCourseDao;
-    private static OrderDao orderDao;
+    private static OrderViewDao orderViewDao;
     private static OrderCourseDao orderCourseDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
@@ -67,7 +67,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao = applicationContext.getBean(CourseDao.class);
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseDao = applicationContext.getBean(CookedCourseDao.class);
-        orderDao = applicationContext.getBean(OrderDao.class);
+        orderViewDao = applicationContext.getBean(OrderViewDao.class);
         orderCourseDao = applicationContext.getBean(OrderCourseDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
@@ -270,19 +270,18 @@ public abstract class RestaurantModelDaoTest {
 
     @Test (timeout = 2000)
     public void addFindDelOrderTest() throws Exception {
-        Order order = new Order();
-        order.setTableId(tableId());
-        order.setEmployeeId(employeeId());
-        order.setOrderNumber(Util.getRandomString());
-        order.setStateType("A");
-        int orderId = orderDao.addOrder(order).getOrderId();
+        OrderView orderView = new OrderView();
+        orderView.setTableId(tableId());
+        orderView.setEmployeeId(employeeId());
+        orderView.setOrderNumber(Util.getRandomString());
+        orderView.setStateType("A");
+        int orderId = orderViewDao.addOrder(orderView).getOrderId();
 
-        Order orderById = orderDao.findOrderById(orderId);
         // Just check of successful retrieving from database,  without "full comparing"!!!
         // Because, at least field <order_datetime> is filling by default (as a current timestamp) on the database level
-        assertTrue(orderById != null);
+        assertTrue(orderViewDao.findOrderById(orderId) != null);
 
-        // Courses in order ----------------------------
+        // Courses in orderView ----------------------------
         String courseName1 = Util.getRandomString();
         Course course1 = new Course();
         course1.setCategoryId(courseCategoryId());
@@ -299,36 +298,36 @@ public abstract class RestaurantModelDaoTest {
         course2.setCost(Util.getRandomFloat());
         course2 = courseDao.addCourse(course2);
 
-        orderCourseDao.addCourseToOrder(order, course1, 3);
-        orderCourseDao.addCourseToOrder(order, course2, 2);
+        orderCourseDao.addCourseToOrder(orderView, course1, 3);
+        orderCourseDao.addCourseToOrder(orderView, course2, 2);
 
-        for (OrderCourse orderCourse : orderCourseDao.findAllOrderCourses(order)) {
-            orderCourseDao.findOrderCourseByCourseId(order, orderCourse.getCourseId());
+        for (OrderCourse orderCourse : orderCourseDao.findAllOrderCourses(orderView)) {
+            orderCourseDao.findOrderCourseByCourseId(orderView, orderCourse.getCourseId());
             System.out.println(orderCourse.getCourseName() + " : " + orderCourse.getCourseCost());
         }
 
-        orderCourseDao.takeCourseFromOrder(order, course1, 2);
-        orderCourseDao.takeCourseFromOrder(order, course1, 1);
-        orderCourseDao.takeCourseFromOrder(order, course2, 2);
+        orderCourseDao.takeCourseFromOrder(orderView, course1, 2);
+        orderCourseDao.takeCourseFromOrder(orderView, course1, 1);
+        orderCourseDao.takeCourseFromOrder(orderView, course2, 2);
 
         courseDao.delCourse(courseName1);
         courseDao.delCourse(courseName2);
         // ----------------------------
 
-        for (Order o : orderDao.findAllOrders()) {
+        for (OrderView o : orderViewDao.findAllOrders()) {
             System.out.println("Order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        for (Order o : orderDao.findAllOrders("A")) {
-            System.out.println("Open order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
+        for (OrderView o : orderViewDao.findAllOrders("A")) {
+            System.out.println("Open orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        for (Order o : orderDao.findAllOrders("B")) {
-            System.out.println("Closed order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
+        for (OrderView o : orderViewDao.findAllOrders("B")) {
+            System.out.println("Closed orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        orderDao.delOrder(order);
-        assertTrue(orderDao.findOrderById(orderId) == null);
+        orderViewDao.delOrder(orderView);
+        assertTrue(orderViewDao.findOrderById(orderId) == null);
     }
 
     @Test(timeout = 2000)

@@ -3,8 +3,8 @@ package com.company.restaurant.dao.jdbc;
 import com.company.restaurant.dao.OrderCourseDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoQuantityLinkTable;
 import com.company.restaurant.model.Course;
-import com.company.restaurant.model.Order;
 import com.company.restaurant.model.OrderCourse;
+import com.company.restaurant.model.OrderView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,23 +64,23 @@ public class JdbcOrderCourseDao extends JdbcDaoQuantityLinkTable<OrderCourse> im
     }
 
     @Override
-    public void addCourseToOrder(Order order, Course course, int quantity) {
-        increaseQuantity(course.getCourseId(), order.getOrderId(), quantity);
+    public void addCourseToOrder(OrderView orderView, Course course, int quantity) {
+        increaseQuantity(course.getCourseId(), orderView.getOrderId(), quantity);
     }
 
     @Override
-    public void takeCourseFromOrder(Order order, Course course, int quantity) {
-        decreaseQuantity(course.getCourseId(), order.getOrderId(), quantity);
+    public void takeCourseFromOrder(OrderView orderView, Course course, int quantity) {
+        decreaseQuantity(course.getCourseId(), orderView.getOrderId(), quantity);
     }
 
     @Override
-    public List<OrderCourse> findAllOrderCourses(Order order) {
-        return findObjectsByFieldCondition(ORDER_ID_FIELD_NAME, order.getOrderId());
+    public List<OrderCourse> findAllOrderCourses(OrderView orderView) {
+        return findObjectsByFieldCondition(ORDER_ID_FIELD_NAME, orderView.getOrderId());
     }
 
     @Override
-    public OrderCourse findOrderCourseByCourseId(Order order, int courseId) {
+    public OrderCourse findOrderCourseByCourseId(OrderView orderView, int courseId) {
         return findObjectFromViewByTwoFieldCondition(COURSE_ID_FIELD_NAME, courseId, ORDER_ID_FIELD_NAME,
-                order.getOrderId());
+                orderView.getOrderId());
     }
 }
