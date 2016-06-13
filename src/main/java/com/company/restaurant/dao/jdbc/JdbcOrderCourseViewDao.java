@@ -1,9 +1,9 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.OrderCourseDao;
+import com.company.restaurant.dao.OrderCourseViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoQuantityLinkTable;
 import com.company.restaurant.model.Course;
-import com.company.restaurant.model.OrderCourse;
+import com.company.restaurant.model.OrderCourseView;
 import com.company.restaurant.model.OrderView;
 
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 23.05.2016.
  */
-public class JdbcOrderCourseDao extends JdbcDaoQuantityLinkTable<OrderCourse> implements OrderCourseDao {
+public class JdbcOrderCourseViewDao extends JdbcDaoQuantityLinkTable<OrderCourseView> implements OrderCourseViewDao {
     private static final String ORDER_COURSE_TABLE_NAME = "order_course";
     private static final String ORDER_COURSE_VIEW_NAME = "v_order_course";
     private static final String COURSE_ID_FIELD_NAME = "course_id";
@@ -40,7 +40,7 @@ public class JdbcOrderCourseDao extends JdbcDaoQuantityLinkTable<OrderCourse> im
     }
 
     @Override
-    protected Map<String, Object> objectToDBMap(OrderCourse orderCourse) {
+    protected Map<String, Object> objectToDBMap(OrderCourseView orderCourse) {
         HashMap<String, Object> result = new HashMap<>();
 
         result.put(QUANTITY_FIELD_NAME, orderCourse.getCourseQuantity());
@@ -49,8 +49,8 @@ public class JdbcOrderCourseDao extends JdbcDaoQuantityLinkTable<OrderCourse> im
     }
 
     @Override
-    protected OrderCourse newObject(ResultSet resultSet) throws SQLException {
-        OrderCourse result = new OrderCourse();
+    protected OrderCourseView newObject(ResultSet resultSet) throws SQLException {
+        OrderCourseView result = new OrderCourseView();
         result.setCourseId(resultSet.getInt(COURSE_ID_FIELD_NAME));
         result.setOrderId(resultSet.getInt(ORDER_ID_FIELD_NAME));
         result.setCourseQuantity(resultSet.getInt(COURSE_QUANTITY_FIELD_NAME));
@@ -74,12 +74,12 @@ public class JdbcOrderCourseDao extends JdbcDaoQuantityLinkTable<OrderCourse> im
     }
 
     @Override
-    public List<OrderCourse> findAllOrderCourses(OrderView orderView) {
+    public List<OrderCourseView> findAllOrderCourses(OrderView orderView) {
         return findObjectsByFieldCondition(ORDER_ID_FIELD_NAME, orderView.getOrderId());
     }
 
     @Override
-    public OrderCourse findOrderCourseByCourseId(OrderView orderView, int courseId) {
+    public OrderCourseView findOrderCourseByCourseId(OrderView orderView, int courseId) {
         return findObjectFromViewByTwoFieldCondition(COURSE_ID_FIELD_NAME, courseId, ORDER_ID_FIELD_NAME,
                 orderView.getOrderId());
     }

@@ -25,7 +25,7 @@ public abstract class RestaurantModelDaoTest {
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseDao cookedCourseDao;
     private static OrderViewDao orderViewDao;
-    private static OrderCourseDao orderCourseDao;
+    private static OrderCourseViewDao orderCourseViewDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
     private static WarehouseDao warehouseDao;
@@ -68,7 +68,7 @@ public abstract class RestaurantModelDaoTest {
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseDao = applicationContext.getBean(CookedCourseDao.class);
         orderViewDao = applicationContext.getBean(OrderViewDao.class);
-        orderCourseDao = applicationContext.getBean(OrderCourseDao.class);
+        orderCourseViewDao = applicationContext.getBean(OrderCourseViewDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
         warehouseDao = applicationContext.getBean(WarehouseDao.class);
@@ -298,17 +298,17 @@ public abstract class RestaurantModelDaoTest {
         course2.setCost(Util.getRandomFloat());
         course2 = courseDao.addCourse(course2);
 
-        orderCourseDao.addCourseToOrder(orderView, course1, 3);
-        orderCourseDao.addCourseToOrder(orderView, course2, 2);
+        orderCourseViewDao.addCourseToOrder(orderView, course1, 3);
+        orderCourseViewDao.addCourseToOrder(orderView, course2, 2);
 
-        for (OrderCourse orderCourse : orderCourseDao.findAllOrderCourses(orderView)) {
-            orderCourseDao.findOrderCourseByCourseId(orderView, orderCourse.getCourseId());
-            System.out.println(orderCourse.getCourseName() + " : " + orderCourse.getCourseCost());
+        for (OrderCourseView orderCourseView : orderCourseViewDao.findAllOrderCourses(orderView)) {
+            orderCourseViewDao.findOrderCourseByCourseId(orderView, orderCourseView.getCourseId());
+            System.out.println(orderCourseView.getCourseName() + " : " + orderCourseView.getCourseCost());
         }
 
-        orderCourseDao.takeCourseFromOrder(orderView, course1, 2);
-        orderCourseDao.takeCourseFromOrder(orderView, course1, 1);
-        orderCourseDao.takeCourseFromOrder(orderView, course2, 2);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course1, 2);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course1, 1);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course2, 2);
 
         courseDao.delCourse(courseName1);
         courseDao.delCourse(courseName2);
