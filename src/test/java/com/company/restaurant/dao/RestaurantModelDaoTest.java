@@ -275,7 +275,8 @@ public abstract class RestaurantModelDaoTest {
         orderView.setEmployeeId(employeeId());
         orderView.setOrderNumber(Util.getRandomString());
         orderView.setStateType("A");
-        int orderId = orderViewDao.addOrder(orderView).getOrderId();
+        orderView = orderViewDao.addOrder(orderView);
+        int orderId = orderView.getOrderId();
 
         // Just check of successful retrieving from database,  without "full comparing"!!!
         // Because, at least field <order_datetime> is filling by default (as a current timestamp) on the database level
