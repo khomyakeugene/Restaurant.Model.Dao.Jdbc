@@ -1,13 +1,15 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.CookedCourseDao;
-import com.company.restaurant.dao.jdbc.proto.JdbcDaoLinkTable;
-import com.company.restaurant.model.CookedCourse;
+import com.company.restaurant.dao.CookedCourseViewDao;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoTable;
+import com.company.restaurant.model.CookedCourseView;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Employee;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 23.05.2016.
  */
-public class JdbcCookedCourseDao extends JdbcDaoLinkTable<CookedCourse> implements CookedCourseDao {
+public class JdbcCookedCourseViewDao extends JdbcDaoTable<CookedCourseView> implements CookedCourseViewDao {
     private static final String COOKED_COURSE_TABLE_NAME = "cooked_course";
     private static final String COOKED_COURSE_VIEW_NAME = "v_cooked_course";
     private static final String COURSE_ID_FIELD_NAME = "course_id";
@@ -37,14 +39,11 @@ public class JdbcCookedCourseDao extends JdbcDaoLinkTable<CookedCourse> implemen
     protected void initMetadata() {
         this.tableName = COOKED_COURSE_TABLE_NAME;
         this.viewName = COOKED_COURSE_VIEW_NAME;
-        this.firstIdFieldName = COURSE_ID_FIELD_NAME;
-        this.secondIdFieldName = EMPLOYEE_ID_FIELD_NAME;
-        this.thirdFieldName = WEIGHT_FIELD_NAME;
     }
 
     @Override
-    protected CookedCourse newObject(ResultSet resultSet) throws SQLException {
-        CookedCourse result = new CookedCourse();
+    protected CookedCourseView newObject(ResultSet resultSet) throws SQLException {
+        CookedCourseView result = new CookedCourseView();
         result.setCourseId(resultSet.getInt(COURSE_ID_FIELD_NAME));
         result.setEmployeeId(resultSet.getInt(EMPLOYEE_ID_FIELD_NAME));
         result.setCookDatetime(resultSet.getTimestamp(COOK_DATETIME_FIELD_NAME));
@@ -63,27 +62,37 @@ public class JdbcCookedCourseDao extends JdbcDaoLinkTable<CookedCourse> implemen
     }
 
     @Override
-    protected Map<String, Object> objectToDBMap(CookedCourse cookedCourse) {
+    protected Map<String, Object> objectToDBMap(CookedCourseView cookedCourseView) {
         HashMap<String, Object> result = new HashMap<>();
 
-        result.put(WEIGHT_FIELD_NAME, cookedCourse.getCookWeight());
+        result.put(EMPLOYEE_ID_FIELD_NAME, cookedCourseView.getEmployeeId());
+        result.put(COURSE_ID_FIELD_NAME, cookedCourseView.getCourseId());
+        result.put(COOK_DATETIME_FIELD_NAME, cookedCourseView.getCookDatetime());
+        result.put(WEIGHT_FIELD_NAME, cookedCourseView.getCookWeight());
 
         return result;
     }
 
     @Override
-    public void addCookedCourse(Course course, Employee employee, Float weight) {
-        addRecord(course.getCourseId(), employee.getEmployeeId(), (weight == null) ? null : weight.toString());
+    public CookedCourseView addCookedCourse(Course course, Employee employee, Float weight) {
+        CookedCourseView cookedCourseView = new CookedCourseView();
+
+        cookedCourseView.setCourseId(course.getCourseId());
+        cookedCourseView.setEmployeeId(employee.getEmployeeId());
+        cookedCourseView.setCookDatetime(new Timestamp(new Date().getTime()));
+        cookedCourseView.setCookWeight(weight);
+
+        return addRecord(cookedCourseView);
     }
 
     @Override
-    public String delCookedCourse(CookedCourse cookedCourse) {
+    public String delCookedCourse(CookedCourseView cookedCourse) {
         // 23.05.2016, 22:15 - TO DO!!!
         return null;
     }
 
     @Override
-    public List<CookedCourse> findAllCookedCourses() {
+    public List<CookedCourseView> findAllCookedCourses() {
         return findAllObjects();
     }
 }

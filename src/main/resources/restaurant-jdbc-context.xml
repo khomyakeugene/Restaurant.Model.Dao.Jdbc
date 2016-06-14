@@ -63,7 +63,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseDao" id="cookedCourseDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseViewDao" id="cookedCourseViewDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 

@@ -2,10 +2,8 @@ package com.company.restaurant.dao.jdbc.proto;
 
 import com.company.util.DataIntegrityException;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.AbstractMap;
 import java.util.Map;
 
@@ -16,8 +14,6 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
     private static final String CANNOT_GET_LAST_GENERATED_ID_PATTERN = "Add record problem: cannot get last generated %s.%s value";
     private static final String CANNOT_DELETE_RECORD_PATTERN = "Cannot delete record in table <%s> because it is impossible " +
             "to detect condition value for field <%s> nor for field <%s>";
-    private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_1 = "INSERT INTO \"%s\"";
-    private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_2 = " (%s) VALUES(%s)";
 
     protected String idFieldName;
     protected String nameFieldName;
@@ -32,17 +28,10 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
         return findObjectByFieldCondition(nameFieldName, name);
     }
 
-    public T addRecord(T object) {
+    protected T retrieveAddedRecord(T object, ResultSet resultSet) {
         T result = object;
 
-        try(Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()) {
-
-            String s = buildInsertExpression(String.format(SQL_INSERT_EXPRESSION_PATTERN_PART_1,
-                    tableName) + SQL_INSERT_EXPRESSION_PATTERN_PART_2, object);
-
-            statement.executeUpdate(s, Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = statement.getGeneratedKeys();
+        try {
             if (resultSet.next()) {
                 int id = resultSet.getInt(idFieldName);
                 // Store new generated id in the "source variant" of added <object> - at least, it is important
@@ -56,7 +45,6 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
             } else  {
                 throw new SQLException(String.format(CANNOT_GET_LAST_GENERATED_ID_PATTERN, tableName, idFieldName));
             }
-
         } catch (SQLException e) {
             databaseError(e);
         }

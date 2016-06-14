@@ -16,6 +16,8 @@ import java.util.Map;
  * Created by Yevhen on 21.05.2016.
  */
 public abstract class JdbcDaoTable<T> extends DaoTable<T> {
+    private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_1 = "INSERT INTO \"%s\"";
+    private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_2 = " (%s) VALUES(%s)";
 
     protected DataSource dataSource;
 
@@ -177,4 +179,28 @@ public abstract class JdbcDaoTable<T> extends DaoTable<T> {
         executeUpdate(buildOneFieldByOneFieldUpdateCondition(updateFieldName, updateFieldValue,
                 conditionFieldName, conditionFieldValue));
     }
+
+    protected T retrieveAddedRecord(T object, ResultSet resultSet) {
+        return object;
+    }
+
+    public T addRecord(T object) {
+        T result = object;
+
+        try(Connection connection = dataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+
+            String s = buildInsertExpression(String.format(SQL_INSERT_EXPRESSION_PATTERN_PART_1,
+                    tableName) + SQL_INSERT_EXPRESSION_PATTERN_PART_2, object);
+
+            statement.executeUpdate(s, Statement.RETURN_GENERATED_KEYS);
+            result = retrieveAddedRecord(object, statement.getGeneratedKeys());
+
+        } catch (SQLException e) {
+            databaseError(e);
+        }
+
+        return result;
+    }
+
 }
