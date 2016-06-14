@@ -34,11 +34,13 @@ public class JdbcCookedCourseViewDao extends JdbcDaoTable<CookedCourseView> impl
     private static final String EMPLOYEE_SECOND_NAME_FIELD_NAME = "employee_second_name";
     private static final String EMPLOYEE_PHONE_NUMBER_FIELD_NAME = "employee_phone_number";
     private static final String EMPLOYEE_SALARY_FIELD_NAME = "employee_salary";
+    private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY " + COOK_DATETIME_FIELD_NAME;
 
     @Override
     protected void initMetadata() {
         this.tableName = COOKED_COURSE_TABLE_NAME;
         this.viewName = COOKED_COURSE_VIEW_NAME;
+        this.orderByCondition = DEFAULT_ORDER_BY_CONDITION;
     }
 
     @Override
