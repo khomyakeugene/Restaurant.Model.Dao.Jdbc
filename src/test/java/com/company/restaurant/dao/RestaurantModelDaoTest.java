@@ -359,12 +359,12 @@ public abstract class RestaurantModelDaoTest {
                 warehouseDao.addIngredientToWarehouse(ingredient, portion, Util.getRandomFloat());
                 warehouseDao.takeIngredientFromWarehouse(ingredient, portion, Util.getRandomFloat());
 
-                System.out.println("menuController.findPortionById(" + portion.getPortionId() + ") test ...");
+                System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
                 assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(portion,
                         portionDao.findPortionById(portion.getPortionId())));
             }
 
-            System.out.println("menuController.findIngredientById(" + ingredient.getId() + ") test ...");
+            System.out.println("ingredientDao.findIngredientById(" + ingredient.getId() + ") test ...");
             assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(ingredient,
                     ingredientDao.findIngredientById(ingredient.getId())));
 
