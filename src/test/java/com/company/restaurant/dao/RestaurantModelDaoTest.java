@@ -28,7 +28,7 @@ public abstract class RestaurantModelDaoTest {
     private static OrderCourseViewDao orderCourseViewDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
-    private static WarehouseDao warehouseDao;
+    private static WarehouseViewDao warehouseViewDao;
 
     private static Employee employee() {
         return employeeDao.findAllEmployees().get(0);
@@ -71,7 +71,7 @@ public abstract class RestaurantModelDaoTest {
         orderCourseViewDao = applicationContext.getBean(OrderCourseViewDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
-        warehouseDao = applicationContext.getBean(WarehouseDao.class);
+        warehouseViewDao = applicationContext.getBean(WarehouseViewDao.class);
     }
 
     @BeforeClass
@@ -356,8 +356,8 @@ public abstract class RestaurantModelDaoTest {
     public void addFindDelWarehouseTest() throws Exception {
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
-                warehouseDao.addIngredientToWarehouse(ingredient, portion, Util.getRandomFloat());
-                warehouseDao.takeIngredientFromWarehouse(ingredient, portion, Util.getRandomFloat());
+                warehouseViewDao.addIngredientToWarehouse(ingredient, portion, Util.getRandomFloat());
+                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, Util.getRandomFloat());
 
                 System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
                 assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(portion,
@@ -369,19 +369,19 @@ public abstract class RestaurantModelDaoTest {
                     ingredientDao.findIngredientById(ingredient.getId())));
 
             System.out.println("Warehouse: " + ingredient.getName() + " : ");
-            for (Warehouse warehouse : warehouseDao.findIngredientInWarehouseByName(ingredient.getName())) {
-                System.out.println(warehouse.getPortionDescription() + ": " + warehouse.getAmount());
+            for (WarehouseView warehouseView : warehouseViewDao.findIngredientInWarehouseByName(ingredient.getName())) {
+                System.out.println(warehouseView.getPortionDescription() + ": " + warehouseView.getAmount());
             }
         }
 
         System.out.println("Warehouse all ingredients:");
-        for (Warehouse warehouse : warehouseDao.findAllWarehouseIngredients()) {
-            System.out.println(warehouse.getIngredientName() + ": " + warehouse.getAmount());
+        for (WarehouseView warehouseView : warehouseViewDao.findAllWarehouseIngredients()) {
+            System.out.println(warehouseView.getIngredientName() + ": " + warehouseView.getAmount());
         }
         System.out.println("Warehouse elapsing ingredients:");
-        for (Warehouse warehouse : warehouseDao.findAllElapsingWarehouseIngredients((float)500.0)) {
-            System.out.println(warehouse.getIngredientName() + ": " + warehouse.getPortionDescription() + ": " +
-                    warehouse.getAmount());
+        for (WarehouseView warehouseView : warehouseViewDao.findAllElapsingWarehouseIngredients((float)500.0)) {
+            System.out.println(warehouseView.getIngredientName() + ": " + warehouseView.getPortionDescription() + ": " +
+                    warehouseView.getAmount());
         }
     }
 }

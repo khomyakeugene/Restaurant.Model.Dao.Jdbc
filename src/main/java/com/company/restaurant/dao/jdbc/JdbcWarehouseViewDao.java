@@ -1,10 +1,10 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.WarehouseDao;
+import com.company.restaurant.dao.WarehouseViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoAmountLinkTable;
 import com.company.restaurant.model.Ingredient;
 import com.company.restaurant.model.Portion;
-import com.company.restaurant.model.Warehouse;
+import com.company.restaurant.model.WarehouseView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 24.05.2016.
  */
-public class JdbcWarehouseDao extends JdbcDaoAmountLinkTable<Warehouse> implements WarehouseDao {
+public class JdbcWarehouseViewDao extends JdbcDaoAmountLinkTable<WarehouseView> implements WarehouseViewDao {
     private static final String WAREHOUSE_TABLE_NAME = "warehouse";
     private static final String WAREHOUSE_VIEW_NAME = "v_warehouse";
     private static final String INGREDIENT_ID_FIELD_NAME = "ingredient_id";
@@ -43,13 +43,13 @@ public class JdbcWarehouseDao extends JdbcDaoAmountLinkTable<Warehouse> implemen
     }
 
     @Override
-    protected Map<String, Object> objectToDBMap(Warehouse object) {
+    protected Map<String, Object> objectToDBMap(WarehouseView object) {
         return null;
     }
 
     @Override
-    protected Warehouse newObject(ResultSet resultSet) throws SQLException {
-        Warehouse result = new Warehouse();
+    protected WarehouseView newObject(ResultSet resultSet) throws SQLException {
+        WarehouseView result = new WarehouseView();
         result.setIngredientId(resultSet.getInt(INGREDIENT_ID_FIELD_NAME));
         result.setPortionId(resultSet.getInt(PORTION_ID_FIELD_NAME));
         result.setAmount(resultSet.getFloat(AMOUNT_FIELD_NAME));
@@ -77,22 +77,22 @@ public class JdbcWarehouseDao extends JdbcDaoAmountLinkTable<Warehouse> implemen
     }
 
     @Override
-    public List<Warehouse> findIngredientInWarehouseByName(String name) {
+    public List<WarehouseView> findIngredientInWarehouseByName(String name) {
         return findObjectsByFieldCondition(INGREDIENT_NAME_FIELD_NAME, name);
     }
 
     @Override
-    public List<Warehouse> findIngredientInWarehouseById(int ingredientId) {
+    public List<WarehouseView> findIngredientInWarehouseById(int ingredientId) {
         return findObjectsByFieldCondition(INGREDIENT_ID_FIELD_NAME, ingredientId);
     }
 
     @Override
-    public List<Warehouse> findAllWarehouseIngredients() {
+    public List<WarehouseView> findAllWarehouseIngredients() {
         return findAllObjects();
     }
 
     @Override
-    public List<Warehouse> findAllElapsingWarehouseIngredients(float limit) {
+    public List<WarehouseView> findAllElapsingWarehouseIngredients(float limit) {
         return createObjectListFromQuery(String.format(Locale.US, SQL_SELECT_ELAPSING_WAREHOUSE_INGREDIENTS, limit));
     }
 }
