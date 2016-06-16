@@ -24,6 +24,7 @@ public abstract class RestaurantModelDaoTest {
     private static CourseDao courseDao;
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseViewDao cookedCourseViewDao;
+    private static StateGraphDao stateGraphDao;
     private static OrderViewDao orderViewDao;
     private static OrderCourseViewDao orderCourseViewDao;
     private static IngredientDao ingredientDao;
@@ -67,6 +68,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao = applicationContext.getBean(CourseDao.class);
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseViewDao = applicationContext.getBean(CookedCourseViewDao.class);
+        stateGraphDao = applicationContext.getBean(StateGraphDao.class);
         orderViewDao = applicationContext.getBean(OrderViewDao.class);
         orderCourseViewDao = applicationContext.getBean(OrderCourseViewDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
@@ -329,6 +331,13 @@ public abstract class RestaurantModelDaoTest {
 
         orderViewDao.delOrder(orderView);
         assertTrue(orderViewDao.findOrderById(orderId) == null);
+
+        for (StateGraph stateGraph : stateGraphDao.findEntityStateGraph(orderViewDao.orderEntityName())) {
+            System.out.println("stateGraph: entityName: " + stateGraph.getEntityName() +
+                    ", initStateType: " + stateGraph.getInitStateType() +
+                    ", finiteStateType: " + stateGraph.getFiniteStateType() +
+                    ", comment: " + stateGraph.getComment());
+        }
     }
 
     @Test(timeout = 2000)
