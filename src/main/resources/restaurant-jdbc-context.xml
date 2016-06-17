@@ -29,13 +29,13 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcCourseCategoryDao" id="courseCategoryDicDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcCourseCategoryDao" id="courseCategoryDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcCourseDao" id="courseDao">
         <property name="dataSource" ref="dataSource"/>
-        <property name="courseCategoryDao" ref="courseCategoryDicDao"/>
+        <property name="courseCategoryDao" ref="courseCategoryDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcMenuCoursesViewDao" id="menuCourseViewDao">
