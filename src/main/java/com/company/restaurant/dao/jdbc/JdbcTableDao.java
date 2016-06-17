@@ -34,8 +34,8 @@ public class JdbcTableDao extends JdbcDaoTableWithId<Table> implements TableDao 
     }
 
     @Override
-    public String delTable(Table table) {
-        return delRecord(table);
+    public void delTable(Table table) {
+        delRecord(table);
     }
 
     @Override

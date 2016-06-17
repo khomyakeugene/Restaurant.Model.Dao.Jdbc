@@ -29,8 +29,8 @@ public class JdbcJobPositionDao extends JdbcDaoTableSimpleDic<JobPosition> imple
     }
 
     @Override
-    public String delJobPosition(String name) {
-        return delRecordByName(name);
+    public void delJobPosition(String name) {
+        delRecordByName(name);
     }
 
     @Override

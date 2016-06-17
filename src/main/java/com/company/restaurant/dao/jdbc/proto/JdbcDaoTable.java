@@ -71,17 +71,13 @@ public abstract class JdbcDaoTable<T> extends DaoTable<T> {
         return getFirstFromList(createObjectListFromQuery(query));
     }
 
-    public String executeUpdate(String query) {
-        String result = null;
-
+    public int executeUpdate(String query) {
         try(Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
+            return statement.executeUpdate(query);
         } catch (SQLException e) {
-            result = e.getMessage();
+            throw new RuntimeException(e);
         }
-
-        return result;
     }
 
     public T findObjectByFieldCondition(String fieldName, Object value) {
@@ -136,17 +132,13 @@ public abstract class JdbcDaoTable<T> extends DaoTable<T> {
         return result;
     }
 
-    public String delRecordByFieldCondition(String fieldName, Object value) {
-        String result = null;
-
+    public void delRecordByFieldCondition(String fieldName, Object value) {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(buildDeleteExpression(fieldName, value));
         } catch (SQLException e) {
-            result = e.getMessage();
+            throw new RuntimeException(e);
         }
-
-        return result;
     }
 
     protected Map<String, Object> getObjectToDBMap(T object) {

@@ -84,8 +84,8 @@ public class JdbcMenuCoursesViewDao extends JdbcDaoLinkTable<MenuCourseView> imp
     }
 
     @Override
-    public String delCourseFromMenu(Menu menu, Course course) {
-        return delRecord(menu.getId(), course.getCourseId());
+    public void delCourseFromMenu(Menu menu, Course course) {
+        delRecord(menu.getId(), course.getCourseId());
     }
 
     @Override

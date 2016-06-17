@@ -32,8 +32,8 @@ public class JdbcCourseCategoryDao extends JdbcDaoTableSimpleDic<CourseCategory>
     }
 
     @Override
-    public String delCourseCategory(String name) {
-        return delRecordByName(name);
+    public void delCourseCategory(String name) {
+        delRecordByName(name);
     }
 
     @Override

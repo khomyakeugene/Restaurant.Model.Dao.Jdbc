@@ -69,18 +69,18 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
         return new AbstractMap.SimpleEntry<>(fieldName, fieldValue);
     }
 
-    public String delRecord(T object) {
+    public void delRecord(T object) {
         AbstractMap.SimpleEntry<String, Object> keyFieldData = getKeyFieldNameAndFieldValue(object);
 
-        return delRecordByFieldCondition(keyFieldData.getKey(), keyFieldData.getValue());
+        delRecordByFieldCondition(keyFieldData.getKey(), keyFieldData.getValue());
     }
 
-    protected String delRecordById(int id) {
-        return delRecordByFieldCondition(idFieldName, id);
+    protected void delRecordById(int id) {
+        delRecordByFieldCondition(idFieldName, id);
     }
 
-    protected String delRecordByName(String name) {
-        return delRecordByFieldCondition(nameFieldName, name);
+    protected void delRecordByName(String name) {
+        delRecordByFieldCondition(nameFieldName, name);
     }
 
     protected T updRecord(T object, String updateFieldName, Object updateFieldValue) {

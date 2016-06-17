@@ -98,8 +98,8 @@ public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements O
     }
 
     @Override
-    public String delOrder(OrderView orderView) {
-        return delRecord(orderView);
+    public void delOrder(OrderView orderView) {
+        delRecord(orderView);
     }
 
     @Override

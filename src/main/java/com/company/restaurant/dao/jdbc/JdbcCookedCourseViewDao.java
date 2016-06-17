@@ -88,9 +88,8 @@ public class JdbcCookedCourseViewDao extends JdbcDaoTable<CookedCourseView> impl
     }
 
     @Override
-    public String delCookedCourse(CookedCourseView cookedCourse) {
+    public void delCookedCourse(CookedCourseView cookedCourse) {
         // 23.05.2016, 22:15 - TO DO!!!
-        return null;
     }
 
     @Override

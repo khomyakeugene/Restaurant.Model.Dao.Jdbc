@@ -65,8 +65,8 @@ public class JdbcPortionDao extends JdbcDaoTableWithId<Portion> implements Porti
     }
 
     @Override
-    public String delPortion(Portion portion) {
-        return delRecord(portion);
+    public void delPortion(Portion portion) {
+        delRecord(portion);
     }
 
     @Override
