@@ -2,6 +2,7 @@ package com.company.restaurant.dao.jdbc;
 
 import com.company.restaurant.dao.CookedCourseViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTable;
+import com.company.restaurant.dao.proto.SqlExpressions;
 import com.company.restaurant.model.CookedCourseView;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Employee;
@@ -88,8 +89,17 @@ public class JdbcCookedCourseViewDao extends JdbcDaoTable<CookedCourseView> impl
     }
 
     @Override
-    public void delCookedCourse(CookedCourseView cookedCourse) {
-        // 23.05.2016, 22:15 - TO DO!!!
+    public void delCookedCourse(CookedCourseView cookedCourseView) {
+        executeUpdate(SqlExpressions.deleteExpression(
+                SqlExpressions.fromExpression(tableName, SqlExpressions.whereExpression(
+                        SqlExpressions.andCondition(
+                                SqlExpressions.equalityCondition(COURSE_ID_FIELD_NAME,
+                                        cookedCourseView.getCourseId()),
+                                SqlExpressions.andCondition(
+                                        SqlExpressions.equalityCondition(EMPLOYEE_ID_FIELD_NAME,
+                                                cookedCourseView.getEmployeeId()),
+                                        SqlExpressions.equalityCondition(COOK_DATETIME_FIELD_NAME,
+                                                toString(cookedCourseView.getCookDatetime()))))), null)));
     }
 
     @Override

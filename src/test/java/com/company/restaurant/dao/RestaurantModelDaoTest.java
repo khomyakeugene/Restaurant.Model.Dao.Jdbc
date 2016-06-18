@@ -365,12 +365,17 @@ public abstract class RestaurantModelDaoTest {
     public void addFindDelWarehouseTest() throws Exception {
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
-                warehouseViewDao.addIngredientToWarehouse(ingredient, portion, Util.getRandomFloat());
-                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, Util.getRandomFloat());
+                float amountToAdd = Util.getRandomFloat();
+                warehouseViewDao.addIngredientToWarehouse(ingredient, portion, amountToAdd);
+                float amountToTake = Util.getRandomFloat();
+                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToTake);
 
                 System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
                 assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(portion,
                         portionDao.findPortionById(portion.getPortionId())));
+
+                // "Clear" warehouse position
+                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
             }
 
             System.out.println("ingredientDao.findIngredientById(" + ingredient.getId() + ") test ...");
