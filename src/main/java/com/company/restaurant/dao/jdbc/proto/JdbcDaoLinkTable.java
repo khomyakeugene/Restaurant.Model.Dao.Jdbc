@@ -12,14 +12,11 @@ import java.util.Map;
 /**
  * Created by Yevhen on 21.05.2016.
  */
-public abstract class JdbcDaoLinkTable<T extends LinkObject> extends JdbcDaoTable<T> {
+public abstract class JdbcDaoLinkTable <T extends LinkObject> extends JdbcDaoJoinTable<T> {
     private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_1 = "INSERT INTO \"%s\" (%s, %s";
     private static final String SQL_INSERT_EXPRESSION_PATTERN_PART_2 = "VALUES(%d, %d";
-    private static final String SQL_DELETE_EXPRESSION_PATTERN = "DELETE FROM \"%s\" WHERE (%s = %d) AND (%s = %d)";
     private static final String SQL_UPDATE_EXPRESSION_PATTERN = "UPDATE \"%s\" SET %s = %s WHERE (%s = %d) AND (%s = %d)";
 
-    protected String firstIdFieldName;
-    protected String secondIdFieldName;
     protected String thirdFieldName;
 
     @Override
@@ -63,15 +60,6 @@ public abstract class JdbcDaoLinkTable<T extends LinkObject> extends JdbcDaoTabl
 
         executeUpdate(String.format(prepareAddRecordPattern(firstId, secondId, linkObject),
                 thirdFieldName, thirdFieldValue));
-    }
-
-    public void addRecord(int firstId, int secondId) {
-        addRecord(firstId, secondId, (T)null);
-    }
-
-    public int delRecord(int firstId, int secondId) {
-        return executeUpdate(String.format(SQL_DELETE_EXPRESSION_PATTERN, tableName, firstIdFieldName, firstId,
-                secondIdFieldName, secondId));
     }
 
     public void updRecord(int firstId, int secondId, Object thirdFieldValue) {

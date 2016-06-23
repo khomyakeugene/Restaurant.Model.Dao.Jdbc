@@ -1,7 +1,7 @@
 package com.company.restaurant.dao.jdbc;
 
 import com.company.restaurant.dao.OrderCourseViewDao;
-import com.company.restaurant.dao.jdbc.proto.JdbcDaoLinkTable;
+import com.company.restaurant.dao.jdbc.proto.JdbcDaoJoinTable;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.OrderCourseView;
 import com.company.restaurant.model.OrderView;
@@ -13,12 +13,11 @@ import java.util.List;
 /**
  * Created by Yevhen on 23.05.2016.
  */
-public class JdbcOrderCourseViewDao extends JdbcDaoLinkTable<OrderCourseView> implements OrderCourseViewDao {
+public class JdbcOrderCourseViewDao extends JdbcDaoJoinTable<OrderCourseView> implements OrderCourseViewDao {
     private static final String ORDER_COURSE_TABLE_NAME = "order_course";
     private static final String ORDER_COURSE_VIEW_NAME = "v_order_course";
     private static final String COURSE_ID_FIELD_NAME = "course_id";
     private static final String ORDER_ID_FIELD_NAME = "order_id";
-    private static final String QUANTITY_FIELD_NAME = "quantity";
     private static final String COURSE_CATEGORY_ID_FIELD_NAME = "course_category_id";
     private static final String COURSE_NAME_FIELD_NAME = "course_name";
     private static final String COURSE_WEIGHT_FIELD_NAME = "course_weight";
@@ -33,7 +32,6 @@ public class JdbcOrderCourseViewDao extends JdbcDaoLinkTable<OrderCourseView> im
         this.orderByCondition = DEFAULT_ORDER_BY_CONDITION;
         this.firstIdFieldName = COURSE_ID_FIELD_NAME;
         this.secondIdFieldName = ORDER_ID_FIELD_NAME;
-        this.thirdFieldName = QUANTITY_FIELD_NAME;
     }
 
     @Override
