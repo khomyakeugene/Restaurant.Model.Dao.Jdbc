@@ -270,7 +270,7 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(tableDao.findTableByNumber(table.getNumber()) == null);
     }
 
-    @Test (timeout = 2000)
+    @Test //(timeout = 2000)
     public void addFindDelOrderTest() throws Exception {
         OrderView orderView = new OrderView();
         orderView.setTableId(tableId());
@@ -301,17 +301,17 @@ public abstract class RestaurantModelDaoTest {
         course2.setCost(Util.getRandomFloat());
         course2 = courseDao.addCourse(course2);
 
-        orderCourseViewDao.addCourseToOrder(orderView, course1, 3);
-        orderCourseViewDao.addCourseToOrder(orderView, course2, 2);
+        orderCourseViewDao.addCourseToOrder(orderView, course1);
+        orderCourseViewDao.addCourseToOrder(orderView, course2);
 
         for (OrderCourseView orderCourseView : orderCourseViewDao.findAllOrderCourses(orderView)) {
             orderCourseViewDao.findOrderCourseByCourseId(orderView, orderCourseView.getCourseId());
             System.out.println(orderCourseView.getCourseName() + " : " + orderCourseView.getCourseCost());
         }
 
-        orderCourseViewDao.takeCourseFromOrder(orderView, course1, 2);
-        orderCourseViewDao.takeCourseFromOrder(orderView, course1, 1);
-        orderCourseViewDao.takeCourseFromOrder(orderView, course2, 2);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course1);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course1);
+        orderCourseViewDao.takeCourseFromOrder(orderView, course2);
 
         courseDao.delCourse(courseName1);
         courseDao.delCourse(courseName2);

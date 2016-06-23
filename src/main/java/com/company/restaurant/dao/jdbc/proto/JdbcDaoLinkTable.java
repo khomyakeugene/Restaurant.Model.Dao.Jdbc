@@ -26,7 +26,9 @@ public abstract class JdbcDaoLinkTable<T extends LinkObject> extends JdbcDaoTabl
     protected Map<String, Object> objectToDBMap(LinkObject object) {
         HashMap<String, Object> result = new HashMap<>();
 
-        result.put(thirdFieldName, object.getLinkData());
+        if (object != null) {
+            result.put(thirdFieldName, object.getLinkData());
+        }
 
         return result;
     }
@@ -63,6 +65,10 @@ public abstract class JdbcDaoLinkTable<T extends LinkObject> extends JdbcDaoTabl
                 thirdFieldName, thirdFieldValue));
     }
 
+    public void addRecord(int firstId, int secondId) {
+        addRecord(firstId, secondId, (T)null);
+    }
+
     public int delRecord(int firstId, int secondId) {
         return executeUpdate(String.format(SQL_DELETE_EXPRESSION_PATTERN, tableName, firstIdFieldName, firstId,
                 secondIdFieldName, secondId));
@@ -81,8 +87,8 @@ public abstract class JdbcDaoLinkTable<T extends LinkObject> extends JdbcDaoTabl
     public String getOneFieldByTwoFieldCondition(String selectField, int firstId, int secondId) {
         String result = null;
 
-        try(Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(twoFieldsQueryCondition(selectField, firstId, secondId));
             if (resultSet.next()) {
                 result = resultSet.getString(1);
