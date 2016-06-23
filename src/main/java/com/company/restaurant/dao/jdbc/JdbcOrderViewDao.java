@@ -1,7 +1,10 @@
 package com.company.restaurant.dao.jdbc;
 
+import com.company.restaurant.dao.OrderCourseViewDao;
 import com.company.restaurant.dao.OrderViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
+import com.company.restaurant.model.Course;
+import com.company.restaurant.model.Order;
 import com.company.restaurant.model.OrderView;
 
 import java.sql.ResultSet;
@@ -32,6 +35,12 @@ public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements O
     private static final String TABLE_NUMBER_FIELD_NAME = "table_number";
     private static final String TABLE_DESCRIPTION_FIELD_NAME = "table_description";
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY order_id";
+
+    private OrderCourseViewDao orderCourseViewDao;
+
+    public void setOrderCourseViewDao(OrderCourseViewDao orderCourseViewDao) {
+        this.orderCourseViewDao = orderCourseViewDao;
+    }
 
     @Override
     protected void initMetadata() {
@@ -125,5 +134,25 @@ public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements O
     @Override
     public OrderView updOrderState(OrderView orderView, String stateType) {
         return updRecord(orderView, STATE_TYPE_FIELD_NAME, stateType);
+    }
+
+    @Override
+    public void addCourseToOrder(Order order, Course course) {
+
+    }
+
+    @Override
+    public void takeCourseFromOrder(Order order, Course course) {
+
+    }
+
+    @Override
+    public List<Course> findAllOrderCourses(Order order) {
+        return null;
+    }
+
+    @Override
+    public Course findOrderCourseByCourseId(Order order, int courseId) {
+        return null;
     }
 }

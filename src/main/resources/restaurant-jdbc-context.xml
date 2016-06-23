@@ -57,6 +57,7 @@
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcOrderViewDao" id="orderViewDao">
         <property name="dataSource" ref="dataSource"/>
+        <property name="orderCourseViewDao" ref="orderCourseViewDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcOrderCourseViewDao" id="orderCourseViewDao">
