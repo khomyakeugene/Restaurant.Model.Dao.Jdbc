@@ -55,13 +55,18 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderViewDao" id="orderViewDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderCourseDao" id="orderCourseDao">
         <property name="dataSource" ref="dataSource"/>
-        <property name="orderCourseViewDao" ref="orderCourseViewDao"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderCourseViewDao" id="orderCourseViewDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderDao" id="orderDao">
         <property name="dataSource" ref="dataSource"/>
+        <property name="orderCourseDao" ref="orderCourseDao"/>
+    </bean>
+
+    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderViewDao" id="orderViewDao">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="orderCourseDao" ref="orderCourseDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseViewDao" id="cookedCourseViewDao">

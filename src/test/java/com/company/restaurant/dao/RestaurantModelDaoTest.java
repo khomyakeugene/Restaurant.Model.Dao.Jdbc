@@ -25,8 +25,8 @@ public abstract class RestaurantModelDaoTest {
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseViewDao cookedCourseViewDao;
     private static StateGraphDao stateGraphDao;
+    private static OrderDao orderDao;
     private static OrderViewDao orderViewDao;
-    private static OrderCourseViewDao orderCourseViewDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
     private static WarehouseViewDao warehouseViewDao;
@@ -69,8 +69,8 @@ public abstract class RestaurantModelDaoTest {
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseViewDao = applicationContext.getBean(CookedCourseViewDao.class);
         stateGraphDao = applicationContext.getBean(StateGraphDao.class);
+        orderDao = applicationContext.getBean(OrderDao.class);
         orderViewDao = applicationContext.getBean(OrderViewDao.class);
-        orderCourseViewDao = applicationContext.getBean(OrderCourseViewDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
         warehouseViewDao = applicationContext.getBean(WarehouseViewDao.class);
@@ -272,6 +272,15 @@ public abstract class RestaurantModelDaoTest {
 
     @Test //(timeout = 2000)
     public void addFindDelOrderTest() throws Exception {
+        Order order = new Order();
+        order.setTableId(tableId());
+        order.setEmployeeId(employeeId());
+        order.setOrderNumber(Util.getRandomString());
+        order.setStateType("A");
+        order = orderDao.addOrder(order);
+        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(order,
+                orderDao.findOrderById(order.getOrderId())));
+
         OrderView orderView = new OrderView();
         orderView.setTableId(tableId());
         orderView.setEmployeeId(employeeId());
@@ -301,17 +310,17 @@ public abstract class RestaurantModelDaoTest {
         course2.setCost(Util.getRandomFloat());
         course2 = courseDao.addCourse(course2);
 
-        orderCourseViewDao.addCourseToOrder(orderView, course1);
-        orderCourseViewDao.addCourseToOrder(orderView, course2);
+        orderViewDao.addCourseToOrder(orderView, course1);
+        orderViewDao.addCourseToOrder(orderView, course2);
 
-        for (OrderCourseView orderCourseView : orderCourseViewDao.findAllOrderCourses(orderView)) {
-            orderCourseViewDao.findOrderCourseByCourseId(orderView, orderCourseView.getCourseId());
-            System.out.println(orderCourseView.getCourseName() + " : " + orderCourseView.getCourseCost());
+        for (Course course : orderViewDao.findAllOrderCourses(order)) {
+            orderViewDao.findOrderCourseByCourseId(order, course.getCourseId());
+            System.out.println(course.getName() + " : " + course.getCost());
         }
 
-        orderCourseViewDao.takeCourseFromOrder(orderView, course1);
-        orderCourseViewDao.takeCourseFromOrder(orderView, course1);
-        orderCourseViewDao.takeCourseFromOrder(orderView, course2);
+        orderViewDao.takeCourseFromOrder(orderView, course1);
+        orderViewDao.takeCourseFromOrder(orderView, course1);
+        orderViewDao.takeCourseFromOrder(orderView, course2);
 
         courseDao.delCourse(courseName1);
         courseDao.delCourse(courseName2);

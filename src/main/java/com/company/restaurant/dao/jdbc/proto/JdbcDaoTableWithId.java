@@ -37,12 +37,8 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
                 // Store new generated id in the "source variant" of added <object> - at least, it is important
                 // to support data integrity
                 setId(id, object);
-                // Retrieve all fields in case if <tableName> != <viewName>, because entity item can contain also
-                // <viewName>-fields
-                if (viewName != null && !viewName.equals(tableName)) {
-                    result = findObjectById(id);
-                }
-            } else  {
+                result = findObjectById(id);
+            } else {
                 throw new SQLException(String.format(CANNOT_GET_LAST_GENERATED_ID_PATTERN, tableName, idFieldName));
             }
         } catch (SQLException e) {

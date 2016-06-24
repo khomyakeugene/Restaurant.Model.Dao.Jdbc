@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.OrderCourseViewDao;
+import com.company.restaurant.dao.OrderCourseDao;
 import com.company.restaurant.dao.OrderViewDao;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
 import com.company.restaurant.model.Course;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements OrderViewDao {
     private static final String ORDER_TABLE_NAME = "order";
     private static final String ORDER_VIEW_NAME = "v_order";
-    private static final String ORDER_ID_FIELD_NAME = "order_id";
+    public static final String ORDER_ID_FIELD_NAME = "order_id";
     private static final String TABLE_ID_FIELD_NAME = "table_id";
     private static final String STATE_TYPE_FIELD_NAME = "state_type";
     private static final String EMPLOYEE_ID_FIELD_NAME = "employee_id";
@@ -36,10 +36,10 @@ public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements O
     private static final String TABLE_DESCRIPTION_FIELD_NAME = "table_description";
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY order_id";
 
-    private OrderCourseViewDao orderCourseViewDao;
+    private OrderCourseDao orderCourseDao;
 
-    public void setOrderCourseViewDao(OrderCourseViewDao orderCourseViewDao) {
-        this.orderCourseViewDao = orderCourseViewDao;
+    public void setOrderCourseDao(OrderCourseDao orderCourseDao) {
+        this.orderCourseDao = orderCourseDao;
     }
 
     @Override
@@ -137,22 +137,23 @@ public class JdbcOrderViewDao extends JdbcDaoTableWithId<OrderView> implements O
     }
 
     @Override
-    public void addCourseToOrder(Order order, Course course) {
-
+    public void addCourseToOrder(OrderView orderView, Course course) {
+        orderCourseDao.addCourseToOrder(orderView, course);
     }
 
     @Override
-    public void takeCourseFromOrder(Order order, Course course) {
-
+    public void takeCourseFromOrder(OrderView orderView, Course course) {
+        orderCourseDao.takeCourseFromOrder(orderView, course);
     }
+
 
     @Override
     public List<Course> findAllOrderCourses(Order order) {
-        return null;
+        return orderCourseDao.findAllOrderCourses(order);
     }
 
     @Override
     public Course findOrderCourseByCourseId(Order order, int courseId) {
-        return null;
+        return orderCourseDao.findOrderCourseByCourseId(order, courseId);
     }
 }

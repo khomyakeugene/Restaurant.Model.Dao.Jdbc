@@ -16,14 +16,14 @@ import java.util.Map;
  */
 public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseDao {
     private static final String COURSE_TABLE_NAME = "course";
-    private static final String COURSE_VIEW_NAME = "v_course";
-    private static final String COURSE_ID_FIELD_NAME = "course_id";
-    private static final String COURSE_CATEGORY_ID_FIELD_NAME = "course_category_id";
-    private static final String NAME_FIELD_NAME = "name";
-    private static final String WEIGHT_FIELD_NAME = "weight";
-    private static final String COST_FIELD_NAME = "cost";
-    private static final String COURSE_CATEGORY_NAME_FIELD_NAME = "course_category_name";
-    private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY course_id";
+    public static final String COURSE_VIEW_NAME = "v_course";
+    public static final String COURSE_ID_FIELD_NAME = "course_id";
+    public static final String COURSE_CATEGORY_ID_FIELD_NAME = "course_category_id";
+    public static final String NAME_FIELD_NAME = "name";
+    public static final String WEIGHT_FIELD_NAME = "weight";
+    public static final String COST_FIELD_NAME = "cost";
+    public static final String COURSE_CATEGORY_NAME_FIELD_NAME = "course_category_name";
+    public static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY course_id";
 
     private CourseCategoryDao courseCategoryDao;
 
