@@ -18,8 +18,6 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
     protected String idFieldName;
     protected String nameFieldName;
 
-    protected abstract void setId(int id, T object);
-
     public T findObjectById(int id) {
         return findObjectByFieldCondition(idFieldName, id);
     }
@@ -33,11 +31,7 @@ public abstract class JdbcDaoTableWithId<T> extends JdbcDaoTable<T> {
 
         try {
             if (resultSet.next()) {
-                int id = resultSet.getInt(idFieldName);
-                // Store new generated id in the "source variant" of added <object> - at least, it is important
-                // to support data integrity
-                setId(id, object);
-                result = findObjectById(id);
+                result = findObjectById(resultSet.getInt(idFieldName));
             } else {
                 throw new SQLException(String.format(CANNOT_GET_LAST_GENERATED_ID_PATTERN, tableName, idFieldName));
             }

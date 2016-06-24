@@ -59,14 +59,16 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean class="com.company.restaurant.dao.jdbc.JdbcStateDao" id="stateDao">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean class="com.company.restaurant.dao.jdbc.JdbcOrderDao" id="orderDao">
         <property name="dataSource" ref="dataSource"/>
         <property name="orderCourseDao" ref="orderCourseDao"/>
-    </bean>
-
-    <bean class="com.company.restaurant.dao.jdbc.JdbcOrderViewDao" id="orderViewDao">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="orderCourseDao" ref="orderCourseDao"/>
+        <property name="tableDao" ref="tableDao"/>
+        <property name="employeeDao" ref="employeeDao"/>
+        <property name="stateDao" ref="stateDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseViewDao" id="cookedCourseViewDao">

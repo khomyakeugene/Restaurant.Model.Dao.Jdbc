@@ -20,10 +20,10 @@ public class JdbcOrderCourseDao extends JdbcDaoJoinTable<Course> implements Orde
         this.tableName = ORDER_COURSE_TABLE_NAME;
         this.orderByCondition = JdbcCourseDao.DEFAULT_ORDER_BY_CONDITION;
         this.firstIdFieldName = JdbcCourseDao.COURSE_ID_FIELD_NAME;
-        this.secondIdFieldName = JdbcOrderViewDao.ORDER_ID_FIELD_NAME;
+        this.secondIdFieldName = JdbcOrderDao.ORDER_ID_FIELD_NAME;
         this.entityTableName = JdbcCourseDao.COURSE_VIEW_NAME;
         this.entityIdFieldName = JdbcCourseDao.COURSE_ID_FIELD_NAME;
-        this.joinIdFieldName = JdbcOrderViewDao.ORDER_ID_FIELD_NAME;
+        this.joinIdFieldName = JdbcOrderDao.ORDER_ID_FIELD_NAME;
     }
 
     @Override

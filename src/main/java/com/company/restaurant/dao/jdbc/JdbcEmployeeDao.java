@@ -85,11 +85,6 @@ public class JdbcEmployeeDao extends JdbcDaoTableWithId<Employee> implements Emp
     }
 
     @Override
-    protected void setId(int id, Employee employee) {
-        employee.setEmployeeId(id);
-    }
-
-    @Override
     protected Map<String, Object> objectToDBMap(Employee employee) {
         HashMap<String, Object> result = new HashMap<>();
 

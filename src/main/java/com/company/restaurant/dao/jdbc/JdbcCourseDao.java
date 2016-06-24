@@ -87,11 +87,6 @@ public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseD
     }
 
     @Override
-    protected void setId(int id, Course course) {
-        course.setCourseId(id);
-    }
-
-    @Override
     public Course addCourse(Course course) {
         return addRecord(course);
     }

@@ -54,11 +54,6 @@ public class JdbcTableDao extends JdbcDaoTableWithId<Table> implements TableDao 
     }
 
     @Override
-    protected void setId(int id, Table table) {
-        table.setTableId(id);
-    }
-
-    @Override
     protected Map<String, Object> objectToDBMap(Table table) {
         HashMap<String, Object> result = new HashMap<>();
 

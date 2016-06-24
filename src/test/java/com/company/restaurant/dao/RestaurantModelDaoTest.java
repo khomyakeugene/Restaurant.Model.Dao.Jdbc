@@ -26,7 +26,6 @@ public abstract class RestaurantModelDaoTest {
     private static CookedCourseViewDao cookedCourseViewDao;
     private static StateGraphDao stateGraphDao;
     private static OrderDao orderDao;
-    private static OrderViewDao orderViewDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
     private static WarehouseViewDao warehouseViewDao;
@@ -70,7 +69,6 @@ public abstract class RestaurantModelDaoTest {
         cookedCourseViewDao = applicationContext.getBean(CookedCourseViewDao.class);
         stateGraphDao = applicationContext.getBean(StateGraphDao.class);
         orderDao = applicationContext.getBean(OrderDao.class);
-        orderViewDao = applicationContext.getBean(OrderViewDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
         warehouseViewDao = applicationContext.getBean(WarehouseViewDao.class);
@@ -90,10 +88,8 @@ public abstract class RestaurantModelDaoTest {
         String name = Util.getRandomString();
         JobPosition jobPosition = jobPositionDao.addJobPosition(name);
 
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(jobPosition,
-                jobPositionDao.findJobPositionByName(jobPosition.getName())));
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(jobPosition,
-                jobPositionDao.findJobPositionById(jobPosition.getId())));
+        assertTrue(jobPosition.equals(jobPositionDao.findJobPositionByName(jobPosition.getName())));
+        assertTrue(jobPosition.equals(jobPositionDao.findJobPositionById(jobPosition.getId())));
 
         jobPositionDao.delJobPosition(name);
         assertTrue(jobPositionDao.findJobPositionByName(name) == null);
@@ -121,18 +117,10 @@ public abstract class RestaurantModelDaoTest {
         int employeeId = employee.getEmployeeId();
 
         // Select test <employee> and check
-        Employee employeeByFirstName = employeeDao.findEmployeeByFirstName(firstName).get(0);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(employee, employeeByFirstName));
-
-        Employee employeeBySecondName = employeeDao.findEmployeeBySecondName(secondName).get(0);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(employee, employeeBySecondName));
-
-        Employee employeeByFirstAndSecondName =
-                employeeDao.findEmployeeByFirstAndSecondName(firstName, secondName).get(0);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(employee, employeeByFirstAndSecondName));
-
-        Employee employeeById = employeeDao.findEmployeeById(employeeId);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(employee, employeeById));
+        assertTrue(employee.equals(employeeDao.findEmployeeByFirstName(firstName).get(0)));
+        assertTrue(employee.equals(employeeDao.findEmployeeBySecondName(secondName).get(0)));
+        assertTrue(employee.equals(employeeDao.findEmployeeByFirstAndSecondName(firstName, secondName).get(0)));
+        assertTrue(employee.equals(employeeDao.findEmployeeById(employeeId)));
 
         employeeDao.delEmployee(employee);
         assertTrue(employeeDao.findEmployeeById(employeeId) == null);
@@ -143,10 +131,8 @@ public abstract class RestaurantModelDaoTest {
         String name = Util.getRandomString();
         CourseCategory courseCategory = courseCategoryDao.addCourseCategory(name);
 
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(courseCategory,
-                courseCategoryDao.findCourseCategoryByName(courseCategory.getName())));
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(courseCategory,
-                courseCategoryDao.findCourseCategoryById(courseCategory.getId())));
+        assertTrue(courseCategory.equals(courseCategoryDao.findCourseCategoryByName(courseCategory.getName())));
+        assertTrue(courseCategory.equals(courseCategoryDao.findCourseCategoryById(courseCategory.getId())));
 
         courseCategoryDao.delCourseCategory(name);
         assertTrue(courseCategoryDao.findCourseCategoryByName(name) == null);
@@ -164,17 +150,14 @@ public abstract class RestaurantModelDaoTest {
         course.setCost(Util.getRandomFloat());
         course = courseDao.addCourse(course);
 
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(course,
-                courseDao.findCourseByName(course.getName())));
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(course,
-                courseDao.findCourseById(course.getCourseId())));
+        assertTrue(course.equals(courseDao.findCourseByName(course.getName())));
+        assertTrue(course.equals(courseDao.findCourseById(course.getCourseId())));
 
         courseDao.delCourse(name);
         assertTrue(courseDao.findCourseByName(name) == null);
         // Test delete by "the whole object"
         course = courseDao.addCourse(course);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(course,
-                courseDao.findCourseByName(name)));
+        assertTrue(course.equals(courseDao.findCourseByName(name)));
         courseDao.delCourse(course);
         assertTrue(courseDao.findCourseByName(name) == null);
         // Test delete of non-existent data
@@ -191,10 +174,8 @@ public abstract class RestaurantModelDaoTest {
         String name = Util.getRandomString();
         Menu menu = menuDao.addMenu(name);
 
-        Menu menuByName = menuDao.findMenuByName(name);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(menu, menuByName));
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(menu,
-                menuDao.findMenuById(menu.getId())));
+        assertTrue(menu.equals(menuDao.findMenuByName(name)));
+        assertTrue(menu.equals(menuDao.findMenuById(menu.getId())));
 
         // Courses in menu ----------------------------
         String courseName1 = Util.getRandomString();
@@ -255,10 +236,8 @@ public abstract class RestaurantModelDaoTest {
             }
         } while (tableWasNotAdded);
 
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(table,
-                tableDao.findTableByNumber(table.getNumber())));
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(table,
-                tableDao.findTableById(table.getTableId())));
+        assertTrue(table.equals(tableDao.findTableByNumber(table.getNumber())));
+        assertTrue(table.equals(tableDao.findTableById(table.getTableId())));
 
         // Whole table list
         for (Table table1 : tableDao.findAllTables()) {
@@ -270,7 +249,7 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(tableDao.findTableByNumber(table.getNumber()) == null);
     }
 
-    @Test //(timeout = 2000)
+    @Test(timeout = 2000)
     public void addFindDelOrderTest() throws Exception {
         Order order = new Order();
         order.setTableId(tableId());
@@ -278,20 +257,9 @@ public abstract class RestaurantModelDaoTest {
         order.setOrderNumber(Util.getRandomString());
         order.setStateType("A");
         order = orderDao.addOrder(order);
-        assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(order,
-                orderDao.findOrderById(order.getOrderId())));
+        int orderId = order.getOrderId();
 
-        OrderView orderView = new OrderView();
-        orderView.setTableId(tableId());
-        orderView.setEmployeeId(employeeId());
-        orderView.setOrderNumber(Util.getRandomString());
-        orderView.setStateType("A");
-        orderView = orderViewDao.addOrder(orderView);
-        int orderId = orderView.getOrderId();
-
-        // Just check of successful retrieving from database,  without "full comparing"!!!
-        // Because, at least field <order_datetime> is filling by default (as a current timestamp) on the database level
-        assertTrue(orderViewDao.findOrderById(orderId) != null);
+        assertTrue(order.equals(orderDao.findOrderById(order.getOrderId())));
 
         // Courses in orderView ----------------------------
         String courseName1 = Util.getRandomString();
@@ -310,38 +278,38 @@ public abstract class RestaurantModelDaoTest {
         course2.setCost(Util.getRandomFloat());
         course2 = courseDao.addCourse(course2);
 
-        orderViewDao.addCourseToOrder(orderView, course1);
-        orderViewDao.addCourseToOrder(orderView, course2);
+        orderDao.addCourseToOrder(order, course1);
+        orderDao.addCourseToOrder(order, course2);
 
-        for (Course course : orderViewDao.findAllOrderCourses(order)) {
-            orderViewDao.findOrderCourseByCourseId(order, course.getCourseId());
+        for (Course course : orderDao.findAllOrderCourses(order)) {
+            orderDao.findOrderCourseByCourseId(order, course.getCourseId());
             System.out.println(course.getName() + " : " + course.getCost());
         }
 
-        orderViewDao.takeCourseFromOrder(orderView, course1);
-        orderViewDao.takeCourseFromOrder(orderView, course1);
-        orderViewDao.takeCourseFromOrder(orderView, course2);
+        orderDao.takeCourseFromOrder(order, course1);
+        orderDao.takeCourseFromOrder(order, course1);
+        orderDao.takeCourseFromOrder(order, course2);
 
         courseDao.delCourse(courseName1);
         courseDao.delCourse(courseName2);
         // ----------------------------
 
-        for (OrderView o : orderViewDao.findAllOrders()) {
+        for (Order o : orderDao.findAllOrders()) {
             System.out.println("Order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        for (OrderView o : orderViewDao.findAllOrders("A")) {
+        for (Order o : orderDao.findAllOrders("A")) {
             System.out.println("Open orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        for (OrderView o : orderViewDao.findAllOrders("B")) {
+        for (Order o : orderDao.findAllOrders("B")) {
             System.out.println("Closed orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
-        orderViewDao.delOrder(orderView);
-        assertTrue(orderViewDao.findOrderById(orderId) == null);
+        orderDao.delOrder(order);
+        assertTrue(orderDao.findOrderById(orderId) == null);
 
-        for (StateGraph stateGraph : stateGraphDao.findEntityStateGraph(orderViewDao.orderEntityName())) {
+        for (StateGraph stateGraph : stateGraphDao.findEntityStateGraph(orderDao.orderEntityName())) {
             System.out.println("stateGraph: entityName: " + stateGraph.getEntityName() +
                     ", initStateType: " + stateGraph.getInitStateType() +
                     ", finiteStateType: " + stateGraph.getFiniteStateType() +
@@ -380,16 +348,14 @@ public abstract class RestaurantModelDaoTest {
                 warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToTake);
 
                 System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
-                assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(portion,
-                        portionDao.findPortionById(portion.getPortionId())));
+                assertTrue(portion.equals(portionDao.findPortionById(portion.getPortionId())));
 
                 // "Clear" warehouse position
                 warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
             }
 
             System.out.println("ingredientDao.findIngredientById(" + ingredient.getId() + ") test ...");
-            assertTrue(ObjectService.isEqualByGetterValuesStringRepresentation(ingredient,
-                    ingredientDao.findIngredientById(ingredient.getId())));
+            assertTrue(ingredient.equals(ingredientDao.findIngredientById(ingredient.getId())));
 
             System.out.println("Warehouse: " + ingredient.getName() + " : ");
             for (WarehouseView warehouseView : warehouseViewDao.findIngredientInWarehouseByName(ingredient.getName())) {

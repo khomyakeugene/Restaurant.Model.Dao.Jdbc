@@ -55,11 +55,6 @@ public class JdbcPortionDao extends JdbcDaoTableWithId<Portion> implements Porti
     }
 
     @Override
-    protected void setId(int id, Portion portion) {
-        portion.setPortionId(id);
-    }
-
-    @Override
     public Portion addPortion(Portion portion) {
         return addRecord(portion);
     }

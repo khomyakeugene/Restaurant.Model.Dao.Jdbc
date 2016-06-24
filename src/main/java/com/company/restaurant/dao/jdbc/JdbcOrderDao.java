@@ -1,7 +1,6 @@
 package com.company.restaurant.dao.jdbc;
 
-import com.company.restaurant.dao.OrderCourseDao;
-import com.company.restaurant.dao.OrderDao;
+import com.company.restaurant.dao.*;
 import com.company.restaurant.dao.jdbc.proto.JdbcDaoTableWithId;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Order;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao {
     private static final String ORDER_TABLE_NAME = "order";
-    private static final String ORDER_ID_FIELD_NAME = "order_id";
+    public static final String ORDER_ID_FIELD_NAME = "order_id";
     private static final String TABLE_ID_FIELD_NAME = "table_id";
     private static final String STATE_TYPE_FIELD_NAME = "state_type";
     private static final String EMPLOYEE_ID_FIELD_NAME = "employee_id";
@@ -26,9 +25,24 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
     private static final String DEFAULT_ORDER_BY_CONDITION = "ORDER BY order_id";
 
     private OrderCourseDao orderCourseDao;
+    private TableDao tableDao;
+    private EmployeeDao employeeDao;
+    private StateDao stateDao;
 
     public void setOrderCourseDao(OrderCourseDao orderCourseDao) {
         this.orderCourseDao = orderCourseDao;
+    }
+
+    public void setTableDao(TableDao tableDao) {
+        this.tableDao = tableDao;
+    }
+
+    public void setEmployeeDao(EmployeeDao employeeDao) {
+        this.employeeDao = employeeDao;
+    }
+
+    public void setStateDao(StateDao stateDao) {
+        this.stateDao = stateDao;
     }
 
     @Override
@@ -40,17 +54,12 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
     }
 
     @Override
-    protected void setId(int id, Order order) {
-        order.setOrderId(id);
-    }
-
-    @Override
     protected Map<String, Object> objectToDBMap(Order order) {
         HashMap<String, Object> result = new HashMap<>();
 
-        result.put(TABLE_ID_FIELD_NAME, order.getTableId());
+        result.put(TABLE_ID_FIELD_NAME, order.getTable().getId());
         result.put(STATE_TYPE_FIELD_NAME, order.getStateType());
-        result.put(EMPLOYEE_ID_FIELD_NAME, order.getEmployeeId());
+        result.put(EMPLOYEE_ID_FIELD_NAME, order.getWaiter().getEmployeeId());
         result.put(ORDER_NUMBER_FIELD_NAME, order.getOrderNumber());
         result.put(ORDER_DATETIME_FIELD_NAME, order.getOrderDatetime());
 
@@ -61,11 +70,12 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
     protected Order newObject(ResultSet resultSet) throws SQLException {
         Order result = new Order();
         result.setOrderId(resultSet.getInt(ORDER_ID_FIELD_NAME));
-        result.setTableId(resultSet.getInt(TABLE_ID_FIELD_NAME));
-        result.setStateType(resultSet.getString(STATE_TYPE_FIELD_NAME));
-        result.setEmployeeId(resultSet.getInt(EMPLOYEE_ID_FIELD_NAME));
         result.setOrderNumber(resultSet.getString(ORDER_NUMBER_FIELD_NAME));
         result.setOrderDatetime(resultSet.getTimestamp(ORDER_DATETIME_FIELD_NAME));
+
+        result.setTable(tableDao.findTableById(resultSet.getInt(TABLE_ID_FIELD_NAME)));
+        result.setWaiter(employeeDao.findEmployeeById(resultSet.getInt(EMPLOYEE_ID_FIELD_NAME)));
+        result.setState(stateDao.findStateByType(resultSet.getString(STATE_TYPE_FIELD_NAME)));
 
         return result;
     }
