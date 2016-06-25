@@ -58,7 +58,7 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
         HashMap<String, Object> result = new HashMap<>();
 
         result.put(TABLE_ID_FIELD_NAME, order.getTable().getId());
-        result.put(STATE_TYPE_FIELD_NAME, order.getStateType());
+        result.put(STATE_TYPE_FIELD_NAME, order.getState().getType());
         result.put(EMPLOYEE_ID_FIELD_NAME, order.getWaiter().getEmployeeId());
         result.put(ORDER_NUMBER_FIELD_NAME, order.getOrderNumber());
         result.put(ORDER_DATETIME_FIELD_NAME, order.getOrderDatetime());

@@ -24,6 +24,7 @@ public abstract class RestaurantModelDaoTest {
     private static CourseDao courseDao;
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseViewDao cookedCourseViewDao;
+    private static StateDao stateDao;
     private static StateGraphDao stateGraphDao;
     private static OrderDao orderDao;
     private static IngredientDao ingredientDao;
@@ -67,6 +68,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao = applicationContext.getBean(CourseDao.class);
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseViewDao = applicationContext.getBean(CookedCourseViewDao.class);
+        stateDao = applicationContext.getBean(StateDao.class);
         stateGraphDao = applicationContext.getBean(StateGraphDao.class);
         orderDao = applicationContext.getBean(OrderDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
@@ -107,11 +109,11 @@ public abstract class RestaurantModelDaoTest {
         String firstName = Util.getRandomString();
         String secondName = Util.getRandomString();
         Employee employee = new Employee();
-        employee.setJobPositionId(jobPositionId());
         employee.setFirstName(firstName);
         employee.setSecondName(secondName);
         employee.setPhoneNumber(Util.getRandomString());
         employee.setSalary(Util.getRandomFloat());
+        employee.setJobPosition(jobPositionDao.findJobPositionById(jobPositionId()));
 
         employee = employeeDao.addEmployee(employee);
         int employeeId = employee.getEmployeeId();
@@ -253,10 +255,10 @@ public abstract class RestaurantModelDaoTest {
     @Test(timeout = 2000)
     public void addFindDelOrderTest() throws Exception {
         Order order = new Order();
-        order.setTableId(tableId());
-        order.setEmployeeId(employeeId());
         order.setOrderNumber(Util.getRandomString());
-        order.setStateType("A");
+        order.setWaiter(employeeDao.findEmployeeById(employeeId()));
+        order.setTable(tableDao.findTableById(tableId()));
+        order.setState(stateDao.findStateByType("A"));
         order = orderDao.addOrder(order);
         int orderId = order.getOrderId();
 
