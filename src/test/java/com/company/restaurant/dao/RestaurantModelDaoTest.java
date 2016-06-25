@@ -142,12 +142,15 @@ public abstract class RestaurantModelDaoTest {
 
     @Test(timeout = 2000)
     public void addFindDelCourseTest() throws Exception {
-        String name = Util.getRandomString();
+        CourseCategory courseCategory = new CourseCategory();
+        courseCategory.setId(courseCategoryId());
+
         Course course = new Course();
-        course.setCategoryId(courseCategoryId());
+        String name = Util.getRandomString();
         course.setName(name);
         course.setWeight(Util.getRandomFloat());
         course.setCost(Util.getRandomFloat());
+        course.setCourseCategory(courseCategory);
         course = courseDao.addCourse(course);
 
         assertTrue(course.equals(courseDao.findCourseByName(course.getName())));
@@ -178,20 +181,18 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(menu.equals(menuDao.findMenuById(menu.getId())));
 
         // Courses in menu ----------------------------
-        String courseName1 = Util.getRandomString();
         Course course1 = new Course();
-        course1.setCategoryId(courseCategoryId());
-        course1.setName(courseName1);
+        course1.setName(Util.getRandomString());
         course1.setWeight(Util.getRandomFloat());
         course1.setCost(Util.getRandomFloat());
+        course1.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         course1 = courseDao.addCourse(course1);
 
-        String courseName2 = Util.getRandomString();
         Course course2 = new Course();
-        course2.setCategoryId(courseCategoryId());
-        course2.setName(courseName2);
+        course2.setName(Util.getRandomString());
         course2.setWeight(Util.getRandomFloat());
         course2.setCost(Util.getRandomFloat());
+        course2.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         course2 = courseDao.addCourse(course2);
 
         menuDao.addCourseToMenu(menu, course1);
@@ -205,8 +206,8 @@ public abstract class RestaurantModelDaoTest {
         menuDao.delCourseFromMenu(menu, course1);
         menuDao.delCourseFromMenu(menu, course2);
 
-        courseDao.delCourse(courseName1);
-        courseDao.delCourse(courseName2);
+        courseDao.delCourse(course1);
+        courseDao.delCourse(course2);
         // ----------------------------
 
         for (Menu m : menuDao.findAllMenus()) {
@@ -262,20 +263,18 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(order.equals(orderDao.findOrderById(order.getOrderId())));
 
         // Courses in orderView ----------------------------
-        String courseName1 = Util.getRandomString();
         Course course1 = new Course();
-        course1.setCategoryId(courseCategoryId());
-        course1.setName(courseName1);
+        course1.setName(Util.getRandomString());
         course1.setWeight(Util.getRandomFloat());
         course1.setCost(Util.getRandomFloat());
+        course1.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         course1 = courseDao.addCourse(course1);
 
-        String courseName2 = Util.getRandomString();
         Course course2 = new Course();
-        course2.setCategoryId(courseCategoryId());
-        course2.setName(courseName2);
+        course2.setName(Util.getRandomString());
         course2.setWeight(Util.getRandomFloat());
         course2.setCost(Util.getRandomFloat());
+        course2.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         course2 = courseDao.addCourse(course2);
 
         orderDao.addCourseToOrder(order, course1);
@@ -290,8 +289,8 @@ public abstract class RestaurantModelDaoTest {
         orderDao.takeCourseFromOrder(order, course1);
         orderDao.takeCourseFromOrder(order, course2);
 
-        courseDao.delCourse(courseName1);
-        courseDao.delCourse(courseName2);
+        courseDao.delCourse(course1);
+        courseDao.delCourse(course2);
         // ----------------------------
 
         for (Order o : orderDao.findAllOrders()) {
@@ -320,11 +319,10 @@ public abstract class RestaurantModelDaoTest {
     @Test(timeout = 2000)
     public void addDelCookedCourse() throws Exception {
         Course testCourse = new Course();
-        testCourse.setCategoryId(courseCategoryId());
         testCourse.setName(Util.getRandomString());
         testCourse.setWeight(Util.getRandomFloat());
         testCourse.setCost(Util.getRandomFloat());
-
+        testCourse.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         testCourse = courseDao.addCourse(testCourse);
 
         CookedCourseView cookedCourseView = cookedCourseViewDao.addCookedCourse(testCourse, employee(),

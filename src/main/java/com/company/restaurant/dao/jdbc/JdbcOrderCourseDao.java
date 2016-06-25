@@ -30,7 +30,6 @@ public class JdbcOrderCourseDao extends JdbcDaoJoinTable<Course> implements Orde
     protected Course newObject(ResultSet resultSet) throws SQLException {
         Course result = new Course();
         result.setCourseId(resultSet.getInt(JdbcCourseDao.COURSE_ID_FIELD_NAME));
-        result.setCategoryId(resultSet.getInt(JdbcCourseDao.COURSE_CATEGORY_ID_FIELD_NAME));
         result.setName(resultSet.getString(JdbcCourseDao.NAME_FIELD_NAME));
         Float weight = resultSet.getFloat(JdbcCourseDao.WEIGHT_FIELD_NAME);
         if (!resultSet.wasNull()) {
@@ -40,7 +39,8 @@ public class JdbcOrderCourseDao extends JdbcDaoJoinTable<Course> implements Orde
         if (!resultSet.wasNull()) {
             result.setCost(cost);
         }
-        result.setCourseCategoryName(resultSet.getString(JdbcCourseDao.COURSE_CATEGORY_NAME_FIELD_NAME));
+        result.getCourseCategory().setId(resultSet.getInt(JdbcCourseDao.COURSE_CATEGORY_ID_FIELD_NAME));
+        result.getCourseCategory().setName(resultSet.getString(JdbcCourseDao.COURSE_CATEGORY_NAME_FIELD_NAME));
 
         return result;
     }

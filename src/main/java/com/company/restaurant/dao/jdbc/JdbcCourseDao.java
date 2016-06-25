@@ -27,6 +27,10 @@ public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseD
 
     private CourseCategoryDao courseCategoryDao;
 
+    public void setCourseCategoryDao(CourseCategoryDao courseCategoryDao) {
+        this.courseCategoryDao = courseCategoryDao;
+    }
+
     @Override
     protected void initMetadata() {
         this.tableName = COURSE_TABLE_NAME;
@@ -36,15 +40,10 @@ public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseD
         this.orderByCondition = DEFAULT_ORDER_BY_CONDITION;
     }
 
-    public void setCourseCategoryDao(CourseCategoryDao courseCategoryDao) {
-        this.courseCategoryDao = courseCategoryDao;
-    }
-
     @Override
     protected Course newObject(ResultSet resultSet) throws SQLException {
         Course result = new Course();
         result.setCourseId(resultSet.getInt(COURSE_ID_FIELD_NAME));
-        result.setCategoryId(resultSet.getInt(COURSE_CATEGORY_ID_FIELD_NAME));
         result.setName(resultSet.getString(NAME_FIELD_NAME));
         Float weight = resultSet.getFloat(WEIGHT_FIELD_NAME);
         if (!resultSet.wasNull()) {
@@ -54,7 +53,8 @@ public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseD
         if (!resultSet.wasNull()) {
             result.setCost(cost);
         }
-        result.setCourseCategoryName(resultSet.getString(COURSE_CATEGORY_NAME_FIELD_NAME));
+        result.getCourseCategory().setId(resultSet.getInt(COURSE_CATEGORY_ID_FIELD_NAME));
+        result.getCourseCategory().setName(resultSet.getString(COURSE_CATEGORY_NAME_FIELD_NAME));
 
         return result;
     }
@@ -63,7 +63,7 @@ public class JdbcCourseDao extends JdbcDaoTableWithId<Course> implements CourseD
     protected Map<String, Object> objectToDBMap(Course course) {
         HashMap<String, Object> result = new HashMap<>();
 
-        result.put(COURSE_CATEGORY_ID_FIELD_NAME, course.getCategoryId());
+        result.put(COURSE_CATEGORY_ID_FIELD_NAME, course.getCourseCategory().getId());
         result.put(NAME_FIELD_NAME, course.getName());
         result.put(WEIGHT_FIELD_NAME, course.getWeight());
         result.put(COST_FIELD_NAME, course.getCost());
