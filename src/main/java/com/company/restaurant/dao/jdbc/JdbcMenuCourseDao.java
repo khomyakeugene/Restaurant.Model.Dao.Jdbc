@@ -5,7 +5,8 @@ import com.company.restaurant.dao.jdbc.proto.JdbcDaoJoinCourse;
 import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Menu;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Yevhen on 27.06.2016.
@@ -33,8 +34,8 @@ public class JdbcMenuCourseDao extends JdbcDaoJoinCourse implements MenuCourseDa
     }
 
     @Override
-    public List<Course> findMenuCourses(Menu menu) {
-        return findJoinEntities(menu.getMenuId());
+    public Set<Course> findMenuCourses(Menu menu) {
+        return new HashSet<>(findJoinEntities(menu.getMenuId()));
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.company.restaurant.model.Course;
 import com.company.restaurant.model.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Yevhen on 20.05.2016.
@@ -77,7 +78,7 @@ public class JdbcMenuDao extends JdbcDaoTableSimpleDic<Menu> implements MenuDao 
     }
 
     @Override
-    public List<Course> findMenuCourses(Menu menu) {
+    public Set<Course> findMenuCourses(Menu menu) {
         return menuCourseDao.findMenuCourses(menu);
     }
 
