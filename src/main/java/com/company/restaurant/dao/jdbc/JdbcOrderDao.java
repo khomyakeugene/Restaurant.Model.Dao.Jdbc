@@ -133,8 +133,8 @@ public class JdbcOrderDao extends JdbcDaoTableWithId<Order> implements OrderDao 
     }
 
     @Override
-    public List<Course> findAllOrderCourses(Order order) {
-        return orderCourseDao.findAllOrderCourses(order);
+    public List<Course> findOrderCourses(Order order) {
+        return orderCourseDao.findOrderCourses(order);
     }
 
     @Override

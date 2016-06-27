@@ -289,7 +289,7 @@ public abstract class RestaurantModelDaoTest {
         orderDao.addCourseToOrder(order, course1);
         orderDao.addCourseToOrder(order, course2);
 
-        for (Course course : orderDao.findAllOrderCourses(order)) {
+        for (Course course : orderDao.findOrderCourses(order)) {
             orderDao.findOrderCourseByCourseId(order, course.getCourseId());
             System.out.println(course.getName() + " : " + course.getCost());
         }

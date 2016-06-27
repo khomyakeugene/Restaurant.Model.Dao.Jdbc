@@ -33,7 +33,7 @@ public class JdbcOrderCourseDao extends JdbcDaoJoinCourse implements OrderCourse
     }
 
     @Override
-    public List<Course> findAllOrderCourses(Order order) {
+    public List<Course> findOrderCourses(Order order) {
         return findJoinEntities(order.getOrderId());
     }
 
