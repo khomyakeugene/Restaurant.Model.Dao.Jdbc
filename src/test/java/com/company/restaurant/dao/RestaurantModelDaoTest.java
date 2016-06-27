@@ -262,9 +262,11 @@ public abstract class RestaurantModelDaoTest {
         order = orderDao.addOrder(order);
         int orderId = order.getOrderId();
 
-        assertTrue(order.equals(orderDao.findOrderById(order.getOrderId())));
+        Order findOrder = orderDao.findOrderById(order.getOrderId());
 
-        // Courses in orderView ----------------------------
+        assertTrue(order.equals(findOrder));
+
+        // Courses in order ----------------------------
         Course course1 = new Course();
         course1.setName(Util.getRandomString());
         course1.setWeight(Util.getRandomFloat());
@@ -280,6 +282,7 @@ public abstract class RestaurantModelDaoTest {
         course2 = courseDao.addCourse(course2);
 
         orderDao.addCourseToOrder(order, course1);
+        orderDao.addCourseToOrder(order, course1);
         orderDao.addCourseToOrder(order, course2);
 
         for (Course course : orderDao.findAllOrderCourses(order)) {
@@ -287,9 +290,13 @@ public abstract class RestaurantModelDaoTest {
             System.out.println(course.getName() + " : " + course.getCost());
         }
 
+        assertTrue(course1.equals(orderDao.findOrderCourseByCourseId(order, course1.getCourseId())));
+
         orderDao.takeCourseFromOrder(order, course1);
         orderDao.takeCourseFromOrder(order, course1);
         orderDao.takeCourseFromOrder(order, course2);
+
+        assertTrue(orderDao.findOrderCourseByCourseId(order, course1.getCourseId()) == null);
 
         courseDao.delCourse(course1);
         courseDao.delCourse(course2);
@@ -300,11 +307,11 @@ public abstract class RestaurantModelDaoTest {
         }
 
         for (Order o : orderDao.findAllOrders("A")) {
-            System.out.println("Open orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
+            System.out.println("Open order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
         for (Order o : orderDao.findAllOrders("B")) {
-            System.out.println("Closed orderView id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
+            System.out.println("Closed order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
         }
 
         orderDao.delOrder(order);
