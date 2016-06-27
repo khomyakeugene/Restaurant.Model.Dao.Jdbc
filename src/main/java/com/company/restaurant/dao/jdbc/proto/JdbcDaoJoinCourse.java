@@ -20,20 +20,6 @@ public class JdbcDaoJoinCourse extends JdbcDaoJoinTable<Course>  {
 
     @Override
     protected Course newObject(ResultSet resultSet) throws SQLException {
-        Course result = new Course();
-        result.setCourseId(resultSet.getInt(JdbcCourseDao.COURSE_ID_FIELD_NAME));
-        result.setName(resultSet.getString(JdbcCourseDao.NAME_FIELD_NAME));
-        Float weight = resultSet.getFloat(JdbcCourseDao.WEIGHT_FIELD_NAME);
-        if (!resultSet.wasNull()) {
-            result.setWeight(weight);
-        }
-        Float cost = resultSet.getFloat(JdbcCourseDao.COST_FIELD_NAME);
-        if (!resultSet.wasNull()) {
-            result.setCost(cost);
-        }
-        result.getCourseCategory().setId(resultSet.getInt(JdbcCourseDao.COURSE_CATEGORY_ID_FIELD_NAME));
-        result.getCourseCategory().setName(resultSet.getString(JdbcCourseDao.COURSE_CATEGORY_NAME_FIELD_NAME));
-
-        return result;
+        return JdbcCourseDao.newCourse(resultSet);
     }
 }
