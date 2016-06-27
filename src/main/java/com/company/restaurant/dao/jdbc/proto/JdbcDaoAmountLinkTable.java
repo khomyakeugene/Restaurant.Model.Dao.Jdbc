@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
-import com.company.restaurant.model.LinkObject;
+import com.company.restaurant.model.proto.LinkObject;
 
 /**
  * Created by Yevhen on 24.05.2016.

@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
-import com.company.restaurant.model.IntegerLinkObject;
+import com.company.restaurant.model.proto.IntegerLinkObject;
 
 /**
  * Created by Yevhen on 23.05.2016.

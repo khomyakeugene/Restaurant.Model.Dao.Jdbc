@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
-import com.company.restaurant.model.JoinObject;
+import com.company.restaurant.model.proto.JoinObject;
 
 import java.util.HashMap;
 import java.util.List;

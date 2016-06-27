@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
-import com.company.restaurant.model.SimpleTypeDic;
+import com.company.restaurant.model.proto.SimpleTypeDic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

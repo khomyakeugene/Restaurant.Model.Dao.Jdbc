@@ -1,6 +1,6 @@
 package com.company.restaurant.dao.jdbc.proto;
 
-import com.company.restaurant.model.LinkObject;
+import com.company.restaurant.model.proto.LinkObject;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
