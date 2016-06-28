@@ -71,8 +71,10 @@
         <property name="stateDao" ref="stateDao"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseViewDao" id="cookedCourseViewDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcCookedCourseDao" id="cookedCourseDao">
         <property name="dataSource" ref="dataSource"/>
+        <property name="employeeDao" ref="employeeDao"/>
+        <property name="courseDao" ref="courseDao"/>
     </bean>
 
     <bean class="com.company.restaurant.dao.jdbc.JdbcIngredientDao" id="ingredientDao">

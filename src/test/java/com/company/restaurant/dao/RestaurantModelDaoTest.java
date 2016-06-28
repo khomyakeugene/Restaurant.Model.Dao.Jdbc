@@ -23,7 +23,7 @@ public abstract class RestaurantModelDaoTest {
     private static TableDao tableDao;
     private static CourseDao courseDao;
     private static CourseCategoryDao courseCategoryDao;
-    private static CookedCourseViewDao cookedCourseViewDao;
+    private static CookedCourseDao cookedCourseDao;
     private static StateDao stateDao;
     private static StateGraphDao stateGraphDao;
     private static OrderDao orderDao;
@@ -67,7 +67,7 @@ public abstract class RestaurantModelDaoTest {
         jobPositionDao = applicationContext.getBean(JobPositionDao.class);
         courseDao = applicationContext.getBean(CourseDao.class);
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
-        cookedCourseViewDao = applicationContext.getBean(CookedCourseViewDao.class);
+        cookedCourseDao = applicationContext.getBean(CookedCourseDao.class);
         stateDao = applicationContext.getBean(StateDao.class);
         stateGraphDao = applicationContext.getBean(StateGraphDao.class);
         orderDao = applicationContext.getBean(OrderDao.class);
@@ -338,18 +338,18 @@ public abstract class RestaurantModelDaoTest {
         testCourse.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         testCourse = courseDao.addCourse(testCourse);
 
-        CookedCourseView cookedCourseView = cookedCourseViewDao.addCookedCourse(testCourse, employee(),
+        CookedCourse cookedCourse = cookedCourseDao.addCookedCourse(testCourse, employee(),
                 Util.getRandomFloat());
 
-        for (CookedCourseView cCV : cookedCourseViewDao.findAllCookedCourses()) {
-            System.out.println(cCV.getCourseName() + " : " + cCV.getCookDatetime());
+        for (CookedCourse cC : cookedCourseDao.findAllCookedCourses()) {
+            System.out.println(cC.getCourse().getName() + " : " + cC.getCookDatetime());
         }
 
-        cookedCourseViewDao.delCookedCourse(cookedCourseView);
+        cookedCourseDao.delCookedCourse(cookedCourse);
         courseDao.delCourse(testCourse);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 20000)
     public void addFindDelWarehouseTest() throws Exception {
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
