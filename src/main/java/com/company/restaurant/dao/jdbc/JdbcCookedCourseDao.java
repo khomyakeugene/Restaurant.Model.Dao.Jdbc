@@ -63,7 +63,7 @@ public class JdbcCookedCourseDao extends JdbcDaoTableWithId<CookedCourse> implem
         CookedCourse result = new CookedCourse();
         result.setCookedCourseId(resultSet.getInt(COOKED_COURSE_ID_FIELD_NAME));
         result.setCookDatetime(resultSet.getTimestamp(COOK_DATETIME_FIELD_NAME));
-        result.setCookWeight(resultSet.getFloat(COOK_WEIGHT_FIELD_NAME));
+        result.setWeight(resultSet.getFloat(COOK_WEIGHT_FIELD_NAME));
 
         Course course = result.getCourse();
         course.setCourseId(resultSet.getInt(COURSE_ID_FIELD_NAME));
@@ -99,7 +99,7 @@ public class JdbcCookedCourseDao extends JdbcDaoTableWithId<CookedCourse> implem
         result.put(EMPLOYEE_ID_FIELD_NAME, cookedCourse.getEmployee().getEmployeeId());
         result.put(COURSE_ID_FIELD_NAME, cookedCourse.getCourse().getCourseId());
         result.put(COOK_DATETIME_FIELD_NAME, cookedCourse.getCookDatetime());
-        result.put(WEIGHT_FIELD_NAME, cookedCourse.getCookWeight());
+        result.put(WEIGHT_FIELD_NAME, cookedCourse.getWeight());
 
         return result;
     }
@@ -111,7 +111,7 @@ public class JdbcCookedCourseDao extends JdbcDaoTableWithId<CookedCourse> implem
         cookedCourse.getCourse().setCourseId(course.getCourseId());
         cookedCourse.getEmployee().setEmployeeId(employee.getEmployeeId());
         cookedCourse.setCookDatetime(new Timestamp(new Date().getTime()));
-        cookedCourse.setCookWeight(weight);
+        cookedCourse.setWeight(weight);
 
         return addRecord(cookedCourse);
     }
