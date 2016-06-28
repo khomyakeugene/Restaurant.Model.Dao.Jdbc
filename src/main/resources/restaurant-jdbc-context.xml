@@ -85,7 +85,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean class="com.company.restaurant.dao.jdbc.JdbcWarehouseViewDao" id="warehouseViewDao">
+    <bean class="com.company.restaurant.dao.jdbc.JdbcWarehouseDao" id="warehouseDao">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 </beans>

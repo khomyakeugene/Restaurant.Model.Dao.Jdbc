@@ -29,7 +29,7 @@ public abstract class RestaurantModelDaoTest {
     private static OrderDao orderDao;
     private static IngredientDao ingredientDao;
     private static PortionDao portionDao;
-    private static WarehouseViewDao warehouseViewDao;
+    private static WarehouseDao warehouseDao;
 
     private static Employee employee() {
         return employeeDao.findAllEmployees().get(0);
@@ -73,7 +73,7 @@ public abstract class RestaurantModelDaoTest {
         orderDao = applicationContext.getBean(OrderDao.class);
         ingredientDao = applicationContext.getBean(IngredientDao.class);
         portionDao = applicationContext.getBean(PortionDao.class);
-        warehouseViewDao = applicationContext.getBean(WarehouseViewDao.class);
+        warehouseDao = applicationContext.getBean(WarehouseDao.class);
     }
 
     @BeforeClass
@@ -354,34 +354,35 @@ public abstract class RestaurantModelDaoTest {
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
                 float amountToAdd = Util.getRandomFloat();
-                warehouseViewDao.addIngredientToWarehouse(ingredient, portion, amountToAdd);
+                warehouseDao.addIngredientToWarehouse(ingredient, portion, amountToAdd);
                 float amountToTake = Util.getRandomFloat();
-                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToTake);
+                warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToTake);
 
                 System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
                 assertTrue(portion.equals(portionDao.findPortionById(portion.getPortionId())));
 
                 // "Clear" warehouse position
-                warehouseViewDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
+                warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
             }
 
             System.out.println("ingredientDao.findIngredientById(" + ingredient.getId() + ") test ...");
             assertTrue(ingredient.equals(ingredientDao.findIngredientById(ingredient.getId())));
 
             System.out.println("Warehouse: " + ingredient.getName() + " : ");
-            for (WarehouseView warehouseView : warehouseViewDao.findIngredientInWarehouseByName(ingredient.getName())) {
-                System.out.println(warehouseView.getPortionDescription() + ": " + warehouseView.getAmount());
+            for (Warehouse warehouse : warehouseDao.findIngredientInWarehouseByName(ingredient.getName())) {
+                System.out.println(warehouse.getPortion().getDescription() + ": " + warehouse.getAmount());
             }
         }
 
         System.out.println("Warehouse all ingredients:");
-        for (WarehouseView warehouseView : warehouseViewDao.findAllWarehouseIngredients()) {
-            System.out.println(warehouseView.getIngredientName() + ": " + warehouseView.getAmount());
+        for (Warehouse warehouse : warehouseDao.findAllWarehouseIngredients()) {
+            System.out.println(warehouse.getIngredient().getName() + ": " + warehouse.getAmount());
         }
         System.out.println("Warehouse elapsing ingredients:");
-        for (WarehouseView warehouseView : warehouseViewDao.findAllElapsingWarehouseIngredients((float)500.0)) {
-            System.out.println(warehouseView.getIngredientName() + ": " + warehouseView.getPortionDescription() + ": " +
-                    warehouseView.getAmount());
+        for (Warehouse warehouse : warehouseDao.findAllElapsingWarehouseIngredients((float)500.0)) {
+            System.out.println(warehouse.getIngredient().getName() + ": " +
+                    warehouse.getPortion().getDescription() + ": " +
+                    warehouse.getAmount());
         }
     }
 }
