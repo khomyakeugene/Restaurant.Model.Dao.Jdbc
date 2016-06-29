@@ -87,6 +87,12 @@ public class JdbcWarehouseDao extends JdbcDaoAmountLinkTable<Warehouse> implemen
     }
 
     @Override
+    public Warehouse findIngredientInWarehouse(Ingredient ingredient, Portion portion) {
+        return getObjectFromViewByTwoFieldCondition(ingredient.getIngredientId(),
+                portion.getPortionId());
+    }
+
+    @Override
     public List<Warehouse> findIngredientInWarehouseByName(String name) {
         return findObjectsByFieldCondition(INGREDIENT_NAME_FIELD_NAME, name);
     }

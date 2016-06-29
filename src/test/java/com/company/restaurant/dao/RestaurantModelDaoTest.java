@@ -349,8 +349,17 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(testCourse);
     }
 
-    @Test(timeout = 20000)
+    @Test//(timeout = 30000)
     public void addFindDelWarehouseTest() throws Exception {
+        for (Portion portion : portionDao.findAllPortions()) {
+            System.out.println(portion);
+            assertTrue(portion.equals(portionDao.findPortionById(portion.getPortionId())));
+        }
+        for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
+            System.out.println(ingredient);
+            assertTrue(ingredient.equals(ingredientDao.findIngredientById(ingredient.getIngredientId())));
+        }
+
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
                 float amountToAdd = Util.getRandomFloat();
@@ -358,15 +367,13 @@ public abstract class RestaurantModelDaoTest {
                 float amountToTake = Util.getRandomFloat();
                 warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToTake);
 
-                System.out.println("portionDao.findPortionById(" + portion.getPortionId() + ") test ...");
-                assertTrue(portion.equals(portionDao.findPortionById(portion.getPortionId())));
-
-                // "Clear" warehouse position
-                warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
+                Warehouse warehouse = warehouseDao.findIngredientInWarehouse(ingredient, portion);
+                if (warehouse != null) {
+                    System.out.println(warehouse);
+                    // "Clear" warehouse position
+                    warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
+                }
             }
-
-            System.out.println("ingredientDao.findIngredientById(" + ingredient.getId() + ") test ...");
-            assertTrue(ingredient.equals(ingredientDao.findIngredientById(ingredient.getId())));
 
             System.out.println("Warehouse: " + ingredient.getName() + " : ");
             for (Warehouse warehouse : warehouseDao.findIngredientInWarehouseByName(ingredient.getName())) {

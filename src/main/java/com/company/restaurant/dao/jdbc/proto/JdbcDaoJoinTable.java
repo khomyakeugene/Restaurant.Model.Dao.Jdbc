@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Yevhen on 23.06.2016.
  */
-public abstract class JdbcDaoJoinTable <T> extends JdbcDaoTable<T>  {
+public abstract class JdbcDaoJoinTable<T> extends JdbcDaoTable<T> {
     private static final String SQL_INSERT_EXPRESSION_PATTERN = "INSERT INTO \"%s\" (%s, %s) VALUES(%d, %d)";
     private static final String SQL_DELETE_EXPRESSION_PATTERN = "DELETE FROM \"%s\" WHERE (%s = %d) AND (%s = %d)";
     private static final String SQL_SELECT_JOIN_EXPRESSION_PATTERN =
@@ -26,7 +26,6 @@ public abstract class JdbcDaoJoinTable <T> extends JdbcDaoTable<T>  {
         return new HashMap<>();
     }
 
-
     public void addRecord(int firstId, int secondId) {
         JoinObject joinObject = new JoinObject();
         joinObject.setFirstId(firstId);
@@ -41,6 +40,16 @@ public abstract class JdbcDaoJoinTable <T> extends JdbcDaoTable<T>  {
                 secondIdFieldName, secondId));
     }
 
+    public T getObjectFromTableByTwoFieldCondition(int firstId, int secondId) {
+        return findObjectFromTableByTwoFieldCondition(firstIdFieldName, firstId,
+                secondIdFieldName, secondId);
+    }
+
+    public T getObjectFromViewByTwoFieldCondition(int firstId, int secondId) {
+        return findObjectFromViewByTwoFieldCondition(firstIdFieldName, firstId,
+                secondIdFieldName, secondId);
+    }
+
     private String findJoinEntitiesQuery(int joinId) {
         return String.format(SQL_SELECT_JOIN_EXPRESSION_PATTERN, entityTableName,
                 entityTableName, tableName, tableName, joinIdFieldName, joinId,
@@ -53,6 +62,6 @@ public abstract class JdbcDaoJoinTable <T> extends JdbcDaoTable<T>  {
 
     public T findJoinEntity(int joinId, int entityId) {
         return getFirstFromList(createObjectListFromQuery(findJoinEntitiesQuery(joinId) + " " +
-        String.format(SQL_AND_ENTITY_ID_CONDITION, entityTableName, entityIdFieldName, entityId)));
+                String.format(SQL_AND_ENTITY_ID_CONDITION, entityTableName, entityIdFieldName, entityId)));
     }
 }
