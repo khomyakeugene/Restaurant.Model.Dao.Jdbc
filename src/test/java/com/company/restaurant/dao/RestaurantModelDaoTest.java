@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -98,10 +99,7 @@ public abstract class RestaurantModelDaoTest {
         // Test delete of non-existent data
         jobPositionDao.delJobPosition(name);
 
-        for (JobPosition jP : jobPositionDao.findAllJobPositions()) {
-            System.out.println("Job position Id :" + jP.getId() +
-                    ", Job position name :" + jP.getName());
-        }
+        jobPositionDao.findAllJobPositions().forEach(System.out::println);
     }
 
     @Test(timeout = 2000)
@@ -169,9 +167,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(name);
 
         // Whole course list
-        for (Course course1 : courseDao.findAllCourses()) {
-            System.out.println("Course: id: " + course1.getCourseId() + ", name: " + course1.getName());
-        }
+        courseDao.findAllCourses().forEach(System.out::println);
     }
 
     @Test(timeout = 2000)
@@ -204,7 +200,7 @@ public abstract class RestaurantModelDaoTest {
 
         for (Course course : menuDao.findMenuCourses(menu)) {
             menuDao.findMenuCourseByCourseId(menu, course.getCourseId());
-            System.out.println(course.getName() + ": " + course.getCourseCategory().getName());
+            System.out.println(course);
         }
 
         menuDao.delCourseFromMenu(menu, course1);
@@ -216,9 +212,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(course2);
         // ----------------------------
 
-        for (Menu m : menuDao.findAllMenus()) {
-            System.out.println("menu_id: " + m.getId() + ", name: " + m.getName());
-        }
+        menuDao.findAllMenus().forEach(System.out::println);
 
         menuDao.delMenu(name);
         assertTrue(menuDao.findMenuByName(name) == null);
@@ -247,10 +241,7 @@ public abstract class RestaurantModelDaoTest {
         assertTrue(table.equals(tableDao.findTableById(table.getTableId())));
 
         // Whole table list
-        for (Table table1 : tableDao.findAllTables()) {
-            System.out.println("Table: id: " + table1.getId() + ", name: " + table1.getName() +
-                    ", number: " + table1.getNumber());
-        }
+        tableDao.findAllTables().forEach(System.out::println);
 
         tableDao.delTable(table);
         assertTrue(tableDao.findTableByNumber(table.getNumber()) == null);
@@ -312,32 +303,30 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(course2);
         // ----------------------------
 
-        for (Order o : orderDao.findAllOrders()) {
-            System.out.println("Order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
-        }
+        System.out.println("All orders:");
+        orderDao.findAllOrders().forEach(System.out::println);
 
-        for (Order o : orderDao.findAllOrders("A")) {
-            System.out.println("Open order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
-        }
+        System.out.println("Open orders:");
+        orderDao.findAllOrders("A").forEach(System.out::println);
 
-        for (Order o : orderDao.findAllOrders("B")) {
-            System.out.println("Closed order id: " + o.getOrderId() + ", Order number: " + o.getOrderNumber());
-        }
+        System.out.println("Closed orders:");
+        orderDao.findAllOrders("B").forEach(System.out::println);
 
         if (employeeIsWaiter) {
             waiter = (Waiter)employeeDao.findEmployeeById(employee.getEmployeeId());
             System.out.println(waiter);
-            assertTrue(order.equals(waiter.getOrders().get(0)));
+
+            Set<Order> orders = waiter.getOrders();
+            Order[] orderArray = orders.toArray(new Order[orders.size()]);
+            assertTrue(orderArray[0].equals(order));
         }
 
         orderDao.delOrder(order);
         assertTrue(orderDao.findOrderById(orderId) == null);
 
-        employeeDao.delEmployee(employee);
+        employeeDao.delEmployee(employee.getEmployeeId());
 
-        for (StateGraph stateGraph : stateGraphDao.findEntityStateGraph(orderDao.orderEntityName())) {
-            System.out.println(stateGraph);
-        }
+        stateGraphDao.findEntityStateGraph(orderDao.orderEntityName()).forEach(System.out::println);
     }
 
     @Test(timeout = 2000)
@@ -352,9 +341,7 @@ public abstract class RestaurantModelDaoTest {
         CookedCourse cookedCourse = cookedCourseDao.addCookedCourse(testCourse, employee(),
                 Util.getRandomFloat());
 
-        for (CookedCourse cC : cookedCourseDao.findAllCookedCourses()) {
-            System.out.println(cC.getCourse().getName() + " : " + cC.getCookDatetime());
-        }
+        cookedCourseDao.findAllCookedCourses().forEach(System.out::println);
 
         cookedCourseDao.delCookedCourse(cookedCourse);
         courseDao.delCourse(testCourse);
@@ -362,15 +349,16 @@ public abstract class RestaurantModelDaoTest {
 
     @Test(timeout = 30000)
     public void addFindDelWarehouseTest() throws Exception {
+        System.out.println("portionDao test ... ");
         for (Portion portion : portionDao.findAllPortions()) {
-            System.out.println(portion);
             assertTrue(portion.equals(portionDao.findPortionById(portion.getPortionId())));
         }
+        System.out.println("ingredientDao test ... ");
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
-            System.out.println(ingredient);
             assertTrue(ingredient.equals(ingredientDao.findIngredientById(ingredient.getIngredientId())));
         }
 
+        System.out.println("warehouseDao test ... ");
         for (Ingredient ingredient: ingredientDao.findAllIngredients()) {
             for (Portion portion : portionDao.findAllPortions()) {
                 float amountToAdd = Util.getRandomFloat();
@@ -380,27 +368,17 @@ public abstract class RestaurantModelDaoTest {
 
                 Warehouse warehouse = warehouseDao.findIngredientInWarehouse(ingredient, portion);
                 if (warehouse != null) {
-                    System.out.println(warehouse);
                     // "Clear" warehouse position
                     warehouseDao.takeIngredientFromWarehouse(ingredient, portion, amountToAdd - amountToTake);
                 }
             }
 
-            System.out.println("Warehouse: " + ingredient.getName() + " : ");
-            for (Warehouse warehouse : warehouseDao.findIngredientInWarehouseByName(ingredient.getName())) {
-                System.out.println(warehouse.getPortion().getDescription() + ": " + warehouse.getAmount());
-            }
+            warehouseDao.findIngredientInWarehouseByName(ingredient.getName()).forEach(System.out::println);
         }
 
         System.out.println("Warehouse all ingredients:");
-        for (Warehouse warehouse : warehouseDao.findAllWarehouseIngredients()) {
-            System.out.println(warehouse.getIngredient().getName() + ": " + warehouse.getAmount());
-        }
+        warehouseDao.findAllWarehouseIngredients().forEach(System.out::println);
         System.out.println("Warehouse elapsing ingredients:");
-        for (Warehouse warehouse : warehouseDao.findAllElapsingWarehouseIngredients((float)500.0)) {
-            System.out.println(warehouse.getIngredient().getName() + ": " +
-                    warehouse.getPortion().getDescription() + ": " +
-                    warehouse.getAmount());
-        }
+        warehouseDao.findAllElapsingWarehouseIngredients((float) 500.0).forEach(System.out::println);
     }
 }
