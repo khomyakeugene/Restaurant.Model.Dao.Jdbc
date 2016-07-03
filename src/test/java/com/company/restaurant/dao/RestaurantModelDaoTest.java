@@ -338,12 +338,52 @@ public abstract class RestaurantModelDaoTest {
         testCourse.setCourseCategory(courseCategoryDao.findCourseCategoryById(courseCategoryId()));
         testCourse = courseDao.addCourse(testCourse);
 
-        CookedCourse cookedCourse = cookedCourseDao.addCookedCourse(testCourse, employee(),
+        Employee employee = employeeDao.findEmployeeById(employeeId());
+        Cook cook = new Cook();
+        ObjectService.copyObjectByAccessors(employee, cook);
+        cook.setEmployeeId(0);
+        employee = employeeDao.addEmployee(cook);
+        boolean employeeIsCook = (employee instanceof Cook);
+
+        CookedCourse cookedCourse = cookedCourseDao.addCookedCourse(testCourse, employee,
                 Util.getRandomFloat());
 
         cookedCourseDao.findAllCookedCourses().forEach(System.out::println);
 
+        if (employeeIsCook) {
+            cook = (Cook) employeeDao.findEmployeeById(employee.getEmployeeId());
+            System.out.println(cook);
+
+            Set<CookedCourse> cookedCourses = cook.getCookedCourses();
+            CookedCourse[] cookedCourseArray =
+                    cookedCourses.toArray(new CookedCourse[cookedCourses.size()]);
+            assertTrue(cookedCourseArray[0].equals(cookedCourse));
+        }
+
         cookedCourseDao.delCookedCourse(cookedCourse);
+        employeeDao.delEmployee(employee.getEmployeeId());
+
+        // ----------------------
+        CookAndWaiter cookAndWaiter = new CookAndWaiter();
+        ObjectService.copyObjectByAccessors(employee, cookAndWaiter);
+        cookAndWaiter.setEmployeeId(0);
+        employee = employeeDao.addEmployee(cookAndWaiter);
+        boolean employeeIsCookAndWaiter = (employee instanceof CookAndWaiter);
+
+        cookedCourse = cookedCourseDao.addCookedCourse(testCourse, employee,
+                Util.getRandomFloat());
+        if (employeeIsCookAndWaiter) {
+            cookAndWaiter = (CookAndWaiter) employeeDao.findEmployeeById(employee.getEmployeeId());
+            System.out.println(cookAndWaiter);
+
+            Set<CookedCourse> cookedCourses = cookAndWaiter.getCookedCourses();
+            CookedCourse[] cookedCourseArray =
+                    cookedCourses.toArray(new CookedCourse[cookedCourses.size()]);
+            assertTrue(cookedCourseArray[0].equals(cookedCourse));
+        }
+
+        cookedCourseDao.delCookedCourse(cookedCourse);
+        employeeDao.delEmployee(employee.getEmployeeId());
         courseDao.delCourse(testCourse);
     }
 
