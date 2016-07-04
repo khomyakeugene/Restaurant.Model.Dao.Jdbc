@@ -25,6 +25,7 @@ public abstract class RestaurantModelDaoTest {
     private static CourseDao courseDao;
     private static CourseCategoryDao courseCategoryDao;
     private static CookedCourseDao cookedCourseDao;
+    private static CourseIngredientDao courseIngredientDao;
     private static StateDao stateDao;
     private static StateGraphDao stateGraphDao;
     private static OrderDao orderDao;
@@ -69,6 +70,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao = applicationContext.getBean(CourseDao.class);
         courseCategoryDao = applicationContext.getBean(CourseCategoryDao.class);
         cookedCourseDao = applicationContext.getBean(CookedCourseDao.class);
+        courseIngredientDao = applicationContext.getBean(CourseIngredientDao.class);
         stateDao = applicationContext.getBean(StateDao.class);
         stateGraphDao = applicationContext.getBean(StateGraphDao.class);
         orderDao = applicationContext.getBean(OrderDao.class);
@@ -140,7 +142,7 @@ public abstract class RestaurantModelDaoTest {
         courseCategoryDao.delCourseCategory(name);
     }
 
-    @Test(timeout = 2000)
+    @Test//(timeout = 2000)
     public void addFindDelCourseTest() throws Exception {
         CourseCategory courseCategory = new CourseCategory();
         courseCategory.setId(courseCategoryId());
@@ -167,7 +169,10 @@ public abstract class RestaurantModelDaoTest {
         courseDao.delCourse(name);
 
         // Whole course list
-        courseDao.findAllCourses().forEach(System.out::println);
+        courseDao.findAllCourses().forEach(c -> {
+            System.out.println(c);
+            courseIngredientDao.findCourseIngredients(c).forEach(System.out::println);
+        });
     }
 
     @Test(timeout = 2000)
