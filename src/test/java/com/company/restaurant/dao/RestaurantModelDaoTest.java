@@ -142,7 +142,7 @@ public abstract class RestaurantModelDaoTest {
         courseCategoryDao.delCourseCategory(name);
     }
 
-    @Test//(timeout = 2000)
+    @Test(timeout = 2000)
     public void addFindDelCourseTest() throws Exception {
         CourseCategory courseCategory = new CourseCategory();
         courseCategory.setId(courseCategoryId());
@@ -172,6 +172,7 @@ public abstract class RestaurantModelDaoTest {
         courseDao.findAllCourses().forEach(c -> {
             System.out.println(c);
             courseIngredientDao.findCourseIngredients(c).forEach(System.out::println);
+            c.getCourseIngredients().forEach(System.out::println);
         });
     }
 
